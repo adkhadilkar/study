@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Learning Trackers</title>
+  <meta name="description" content="Index page linking to AI Learn Plan and Agent Infra Plan trackers." />
+
+  <!-- Optional: nicer font (safe fallback if offline) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0b0c10;
+      --panel: rgba(255,255,255,0.06);
+      --panel2: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.12);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.68);
+      --muted2: rgba(255,255,255,0.55);
+      --good: rgba(83, 255, 178, 0.95);
+      --warn: rgba(255, 196, 83, 0.95);
+      --bad: rgba(255, 92, 120, 0.95);
+      --focus: rgba(140, 196, 255, 0.95);
+      --shadow: 0 16px 60px rgba(0,0,0,0.45);
+      --radius: 18px;
+      --radius2: 14px;
+      --radius3: 12px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg: #f6f7fb;
+        --panel: rgba(0,0,0,0.04);
+        --panel2: rgba(0,0,0,0.06);
+        --border: rgba(0,0,0,0.10);
+        --text: rgba(0,0,0,0.86);
+        --muted: rgba(0,0,0,0.64);
+        --muted2: rgba(0,0,0,0.50);
+        --shadow: 0 18px 50px rgba(0,0,0,0.12);
+      }
+    }
+
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      background:
+        radial-gradient(1200px 500px at 10% 0%, rgba(140,196,255,0.18), transparent 55%),
+        radial-gradient(900px 600px at 100% 10%, rgba(83,255,178,0.12), transparent 55%),
+        radial-gradient(900px 600px at 30% 110%, rgba(255,92,120,0.10), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      letter-spacing: 0.2px;
+    }
+
+    a{ color: var(--focus); text-decoration: none; }
+    a:hover{ text-decoration: underline; }
+
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 18px 70px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .title{
+      display:flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    h1{
+      margin: 0;
+      font-size: 22px;
+      font-weight: 750;
+      letter-spacing: -0.2px;
+    }
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.35;
+      max-width: 80ch;
+    }
+
+    .badgeRow{
+      display:flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 6px;
+    }
+    .badge{
+      border: 1px solid var(--border);
+      background: var(--panel);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+      display:inline-flex;
+      gap: 8px;
+      align-items:center;
+    }
+    .dot{
+      width: 8px; height: 8px; border-radius: 99px;
+      background: var(--muted2);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
+    }
+    .dot.good{ background: var(--good); }
+    .dot.focus{ background: var(--focus); }
+    .dot.warn{ background: var(--warn); }
+
+    .panel{
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--panel), rgba(255,255,255,0.03));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .controls{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items:center;
+      justify-content: space-between;
+      padding: 14px 14px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .btn{
+      cursor:pointer;
+      user-select:none;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      padding: 9px 11px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      display:inline-flex;
+      gap: 8px;
+      align-items:center;
+      transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+    .btn:hover{
+      background: var(--panel2);
+      border-color: rgba(255,255,255,0.18);
+      transform: translateY(-1px);
+      text-decoration: none;
+    }
+    .btn:active{ transform: translateY(0px); }
+
+    .content{
+      padding: 14px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+
+    .card{
+      grid-column: span 6;
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      background: rgba(255,255,255,0.03);
+      overflow:hidden;
+      display:flex;
+      flex-direction: column;
+      min-height: 180px;
+    }
+
+    @media (max-width: 900px){
+      .card{ grid-column: span 12; }
+    }
+
+    .cardHead{
+      padding: 14px 14px 10px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      display:flex;
+      align-items:flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .cardTitle{
+      display:flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .cardTitle b{
+      font-size: 14px;
+      letter-spacing: -0.1px;
+    }
+    .cardTitle span{
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      font-family: var(--mono);
+    }
+
+    .chip{
+      font-size: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      padding: 5px 8px;
+      border-radius: 999px;
+      color: var(--muted);
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .cardBody{
+      padding: 12px 14px 14px;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .cardBody p{
+      margin: 0;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .row{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items:center;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+
+    .hint{
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .footer{
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+
+    code.inline{
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.78);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.92);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      box-shadow: 0 18px 55px rgba(0,0,0,0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      z-index: 20;
+      max-width: min(720px, calc(100vw - 24px));
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .toast.show{
+      opacity: 1;
+      transform: translateX(-50%) translateY(-2px);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="title">
+        <h1>My Learning Trackers</h1>
+        <p class="subtitle">
+          Quick launcher for your two HTML plans with the same visual theme. Put this file as <code class="inline">index.html</code>
+          in the same folder as <code class="inline">file1.html</code> and <code class="inline">file2.html</code> (see links below).
+        </p>
+        <div class="badgeRow">
+          <span class="badge"><span class="dot focus"></span>Progress saved per page (localStorage)</span>
+          <span class="badge"><span class="dot good"></span>Works locally & on GitHub Pages</span>
+          <span class="badge"><span class="dot warn"></span>Keep sensitive notes off Pages</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="controls">
+        <div class="hint" id="lastVisited">
+          Last opened: <span id="lastVisitedText" class="muted">—</span>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <button class="btn" id="openLastBtn" title="Open the last plan you visited">↩︎ Open last</button>
+          <button class="btn" id="clearLastBtn" title="Clear the 'last opened' memory">🧹 Clear</button>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="card">
+          <div class="cardHead">
+            <div class="cardTitle">
+              <b>AI Learn Plan</b>
+              <span>file1.html</span>
+            </div>
+            <span class="chip">Plan</span>
+          </div>
+          <div class="cardBody">
+            <p>
+              Your broader AI learning tracker. Use this for fundamentals + projects + steady daily progress.
+              Open it to continue checking off tasks and adding notes.
+            </p>
+            <div class="row">
+              <a class="btn" href="file1.html" data-plan="file1.html">→ Open AI Learn Plan</a>
+              <div class="hint">Tip: bookmark this page.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="cardHead">
+            <div class="cardTitle">
+              <b>Agent Infra Plan</b>
+              <span>file2.html</span>
+            </div>
+            <span class="chip">Plan</span>
+          </div>
+          <div class="cardBody">
+            <p>
+              Your agentic infrastructure tracker (tools, RAG, durable workflows, tracing, evals).
+              This is the “job-aligned” plan for agent platform/infra roles.
+            </p>
+            <div class="row">
+              <!-- If your filename is literally "file2.n=html", change href below to match exactly -->
+              <a class="btn" href="file2.html" data-plan="file2.html">→ Open Agent Infra Plan</a>
+              <div class="hint">Works best with consistent commits.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p style="margin:14px 0 8px;">
+        <b>Deploy:</b> Commit <code class="inline">index.html</code>, <code class="inline">file1.html</code>, <code class="inline">file2.html</code> →
+        Repo Settings → Pages → Deploy from branch → <code class="inline">main</code> + <code class="inline">/(root)</code>.
+      </p>
+      <p style="margin:0;">
+        <span class="muted">Note:</span> GitHub Pages is typically public. If you want privacy, open the HTML files locally.
+      </p>
+    </div>
+
+    <div class="toast" id="toast"></div>
+  </div>
+
+<script>
+  const KEY = "tracker_index_last_opened_v1";
+
+  const $ = (sel)=>document.querySelector(sel);
+
+  function toast(msg){
+    const t = $("#toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(()=>t.classList.remove("show"), 2200);
+  }
+
+  function setLast(path){
+    const payload = { path, at: new Date().toISOString() };
+    localStorage.setItem(KEY, JSON.stringify(payload));
+    renderLast();
+  }
+
+  function getLast(){
+    try{
+      const raw = localStorage.getItem(KEY);
+      if(!raw) return null;
+      return JSON.parse(raw);
+    }catch{
+      return null;
+    }
+  }
+
+  function clearLast(){
+    localStorage.removeItem(KEY);
+    renderLast();
+  }
+
+  function renderLast(){
+    const last = getLast();
+    const el = $("#lastVisitedText");
+    if(!last?.path){
+      el.textContent = "—";
+      return;
+    }
+    const when = new Date(last.at);
+    const pretty = isNaN(when.getTime()) ? last.at : when.toLocaleString();
+    el.textContent = `${last.path} • ${pretty}`;
+  }
+
+  // Track clicks on plan links
+  for(const a of document.querySelectorAll("a[data-plan]")){
+    a.addEventListener("click", ()=> setLast(a.getAttribute("data-plan")));
+  }
+
+  $("#openLastBtn").addEventListener("click", ()=>{
+    const last = getLast();
+    if(!last?.path){
+      toast("No last plan saved yet.");
+      return;
+    }
+    window.location.href = last.path;
+  });
+
+  $("#clearLastBtn").addEventListener("click", ()=>{
+    clearLast();
+    toast("Cleared last opened.");
+  });
+
+  renderLast();
+</script>
+</body>
+</html>
