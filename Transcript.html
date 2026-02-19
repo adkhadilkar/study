@@ -1,0 +1,1412 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Agentic Infra — 8-Week (Weekday) Tracker</title>
+  <meta name="description" content="A professional, self-contained HTML tracker for an 6–8 week agentic infrastructure learning plan (1 hour/day, weekdays)." />
+
+  <!-- Optional: nicer font (safe fallback if offline) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0b0c10;
+      --panel: rgba(255,255,255,0.06);
+      --panel2: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.12);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.68);
+      --muted2: rgba(255,255,255,0.55);
+      --good: rgba(83, 255, 178, 0.95);
+      --warn: rgba(255, 196, 83, 0.95);
+      --bad: rgba(255, 92, 120, 0.95);
+      --focus: rgba(140, 196, 255, 0.95);
+      --shadow: 0 16px 60px rgba(0,0,0,0.45);
+      --radius: 18px;
+      --radius2: 14px;
+      --radius3: 12px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg: #f6f7fb;
+        --panel: rgba(0,0,0,0.04);
+        --panel2: rgba(0,0,0,0.06);
+        --border: rgba(0,0,0,0.10);
+        --text: rgba(0,0,0,0.86);
+        --muted: rgba(0,0,0,0.64);
+        --muted2: rgba(0,0,0,0.50);
+        --shadow: 0 18px 50px rgba(0,0,0,0.12);
+      }
+    }
+
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      background:
+        radial-gradient(1200px 500px at 10% 0%, rgba(140,196,255,0.18), transparent 55%),
+        radial-gradient(900px 600px at 100% 10%, rgba(83,255,178,0.12), transparent 55%),
+        radial-gradient(900px 600px at 30% 110%, rgba(255,92,120,0.10), transparent 60%),
+        var(--bg);
+      color: var(--text);
+      letter-spacing: 0.2px;
+    }
+
+    a{ color: var(--focus); text-decoration: none; }
+    a:hover{ text-decoration: underline; }
+
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 18px 70px;
+    }
+
+    .topbar{
+      display:flex;
+      align-items:flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .title{
+      display:flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    h1{
+      margin: 0;
+      font-size: 22px;
+      font-weight: 750;
+      letter-spacing: -0.2px;
+    }
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13.5px;
+      line-height: 1.35;
+      max-width: 72ch;
+    }
+
+    .badgeRow{
+      display:flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 6px;
+    }
+    .badge{
+      border: 1px solid var(--border);
+      background: var(--panel);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+      display:inline-flex;
+      gap: 8px;
+      align-items:center;
+    }
+    .dot{
+      width: 8px; height: 8px; border-radius: 99px;
+      background: var(--muted2);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
+    }
+    .dot.good{ background: var(--good); }
+    .dot.focus{ background: var(--focus); }
+    .dot.warn{ background: var(--warn); }
+
+    .panel{
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--panel), rgba(255,255,255,0.03));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .controls{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items:center;
+      justify-content: space-between;
+      padding: 14px 14px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .leftControls{
+      display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+    }
+    .rightControls{
+      display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+    }
+
+    .btn{
+      cursor:pointer;
+      user-select:none;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      padding: 9px 11px;
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 13px;
+      display:inline-flex;
+      gap: 8px;
+      align-items:center;
+      transition: transform 0.05s ease, background 0.15s ease, border-color 0.15s ease;
+    }
+    .btn:hover{
+      background: var(--panel2);
+      border-color: rgba(255,255,255,0.18);
+      transform: translateY(-1px);
+    }
+    .btn:active{ transform: translateY(0px); }
+
+    .btn.secondary{ color: var(--muted); }
+
+    .toggle{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .toggle input{ accent-color: #6aa9ff; }
+
+    .search{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      padding: 9px 10px;
+      border-radius: 12px;
+      min-width: 260px;
+    }
+    .search input{
+      width: 100%;
+      outline: none;
+      border: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 13px;
+    }
+    .search input::placeholder{ color: var(--muted2); }
+
+    .progressWrap{
+      padding: 14px 14px 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .progressRow{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .progressRow .label{
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .progressRow .numbers{
+      font-size: 13px;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+    .bar{
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .fill{
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, rgba(140,196,255,0.95), rgba(83,255,178,0.92));
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+
+    .weeks{
+      padding: 14px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+
+    .weekCard{
+      grid-column: span 6;
+      border: 1px solid var(--border);
+      border-radius: var(--radius2);
+      background: rgba(255,255,255,0.03);
+      overflow:hidden;
+    }
+    @media (max-width: 900px){
+      .weekCard{ grid-column: span 12; }
+      .search{ min-width: 100%; }
+      .controls{ gap: 12px; }
+      .rightControls{ width: 100%; justify-content: space-between; }
+    }
+
+    .weekHead{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 12px 10px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .weekTitle{
+      display:flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+    .weekTitle b{
+      font-size: 14px;
+      letter-spacing: -0.1px;
+    }
+    .weekTitle span{
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .weekMeta{
+      display:flex; gap: 8px; align-items:center;
+      font-size: 12px; color: var(--muted);
+      font-family: var(--mono);
+      white-space: nowrap;
+    }
+
+    .weekBody{
+      padding: 10px 10px 12px;
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    details.day{
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.03);
+      overflow:hidden;
+    }
+
+    summary.daySum{
+      list-style:none;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 10px;
+    }
+    summary.daySum::-webkit-details-marker{ display:none; }
+
+    .dayLeft{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .check{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .check input{
+      width: 18px; height: 18px;
+      accent-color: #6aa9ff;
+      cursor:pointer;
+    }
+
+    .dayName{
+      display:flex;
+      flex-direction: column;
+      min-width: 0;
+      gap: 2px;
+    }
+    .dayName .t{
+      font-size: 13.5px;
+      font-weight: 650;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .dayName .s{
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chip{
+      font-size: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      padding: 5px 8px;
+      border-radius: 999px;
+      color: var(--muted);
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .dayContent{
+      padding: 10px 12px 12px;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      display:grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 900px){
+      .dayContent{ grid-template-columns: 1fr; }
+    }
+
+    .box{
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.02);
+      border-radius: 14px;
+      padding: 10px 10px;
+    }
+    .box h4{
+      margin: 0 0 6px;
+      font-size: 12.5px;
+      color: var(--muted);
+      font-weight: 650;
+      letter-spacing: 0.2px;
+      text-transform: uppercase;
+    }
+    .box p{
+      margin: 0 0 8px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .box ul{
+      margin: 0;
+      padding-left: 18px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .box li{ margin: 4px 0; }
+    .muted{ color: var(--muted); }
+
+    .notes{
+      width: 100%;
+      min-height: 92px;
+      resize: vertical;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.12);
+      border-radius: 12px;
+      padding: 10px 10px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.35;
+      outline: none;
+    }
+    @media (prefers-color-scheme: light){
+      .notes{ background: rgba(255,255,255,0.75); }
+    }
+
+    .resList{
+      display:flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: 6px;
+      font-size: 13px;
+    }
+    .resItem{
+      display:flex;
+      align-items:flex-start;
+      gap: 8px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+    .resItem b{
+      color: var(--text);
+      font-weight: 650;
+    }
+    .resItem a{ word-break: break-word; }
+
+    .footer{
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+    code.inline{
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+    }
+
+    .fileInput{
+      display:none;
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.78);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.92);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      box-shadow: 0 18px 55px rgba(0,0,0,0.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      z-index: 20;
+      max-width: min(720px, calc(100vw - 24px));
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .toast.show{
+      opacity: 1;
+      transform: translateX(-50%) translateY(-2px);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="title">
+        <h1>Agentic Infrastructure — 8-Week Weekday Tracker (1 hour/day)</h1>
+        <p class="subtitle">
+          This is a practical “agentic infra” ramp-up: build a small agent service (API + tools + RAG + durable workflows + tracing + evals).
+          Check off each day, add notes, export/import progress, and optionally deploy as GitHub Pages.
+        </p>
+        <div class="badgeRow">
+          <span class="badge"><span class="dot focus"></span>Stack: Python + FastAPI + Postgres/pgvector</span>
+          <span class="badge"><span class="dot good"></span>Infra: Temporal + OpenTelemetry</span>
+          <span class="badge"><span class="dot warn"></span>Orchestration: LangGraph (optional but recommended)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="controls">
+        <div class="leftControls">
+          <div class="search" title="Search title and content">
+            <span style="opacity:.8">🔎</span>
+            <input id="search" type="text" placeholder="Search (e.g., Temporal, pgvector, tracing, guardrails)..." />
+          </div>
+
+          <label class="toggle" title="Hide completed days">
+            <input id="hideDone" type="checkbox" />
+            Hide completed
+          </label>
+
+          <label class="toggle" title="Weeks 7–8 are optional. Toggle to hide/show them.">
+            <input id="showOptional" type="checkbox" checked />
+            Show optional (Weeks 7–8)
+          </label>
+        </div>
+
+        <div class="rightControls">
+          <button class="btn secondary" id="exportBtn" title="Download your progress as JSON">⬇️ Export</button>
+          <button class="btn secondary" id="importBtn" title="Import a previously exported JSON progress file">⬆️ Import</button>
+          <input class="fileInput" id="importFile" type="file" accept="application/json" />
+          <button class="btn secondary" id="resetBtn" title="Reset checkmarks + notes (you'll be asked to confirm)">↩︎ Reset</button>
+        </div>
+      </div>
+
+      <div class="progressWrap">
+        <div class="progressRow">
+          <div class="label">Overall progress</div>
+          <div class="numbers" id="overallNumbers">0 / 40</div>
+        </div>
+        <div class="bar" aria-label="Overall progress bar"><div class="fill" id="overallBar"></div></div>
+      </div>
+
+      <div class="weeks" id="weeks"></div>
+    </div>
+
+    <div class="footer">
+      <p style="margin: 14px 0 8px;">
+        <b>How to use:</b> Expand a day → do the work → check it off → add notes. Your state is saved in your browser via <code class="inline">localStorage</code>.
+      </p>
+      <p style="margin: 0 0 10px;">
+        <b>Deploy to GitHub Pages:</b> Keep this file as <code class="inline">index.html</code> in your repo root → Repo Settings → Pages → “Deploy from a branch” → branch <code class="inline">main</code> and folder <code class="inline">/(root)</code>.
+        If you don’t want a public site, just open the file locally.
+      </p>
+      <p style="margin: 0;">
+        <span class="muted">Tip:</span> At the end of each week, write a short “What I built / What broke / What I learned” note in the week’s last day.
+        That weekly narrative becomes interview gold for agentic infra roles.
+      </p>
+    </div>
+
+    <div class="toast" id="toast"></div>
+  </div>
+
+<script>
+/**
+ * Agentic infra (in plain English):
+ * - Reliable tool execution (APIs, DB, web), safety/guardrails, and cost controls
+ * - Orchestration (multi-step flows, retries, human approvals)
+ * - Durable execution (resume after crashes / long running workflows)
+ * - Observability + evaluation (tracing, metrics, regression tests, red-teaming)
+ */
+
+const STORAGE_KEY = "agentic_infra_tracker_v1";
+
+const RESOURCE = {
+  agentsSdkGuide: { label: "OpenAI Agents SDK guide", url: "https://developers.openai.com/api/docs/guides/agents-sdk/" },
+  agentsSdkPy: { label: "OpenAI Agents SDK (Python) docs", url: "https://openai.github.io/openai-agents-python/" },
+  agentsSdkAgents: { label: "Agents (SDK reference)", url: "https://openai.github.io/openai-agents-python/agents/" },
+  openaiAgentsPracticalPdf: { label: "OpenAI: Practical guide to building agents (PDF)", url: "https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf" },
+  openaiAgentSafety: { label: "OpenAI: Safety in building agents", url: "https://developers.openai.com/api/docs/guides/agent-builder-safety/" },
+  openaiPromptInjections: { label: "OpenAI: Understanding prompt injections", url: "https://openai.com/index/prompt-injections/" },
+
+  fastapiFirstSteps: { label: "FastAPI: First steps", url: "https://fastapi.tiangolo.com/tutorial/first-steps/" },
+  fastapiBackground: { label: "FastAPI: Background tasks", url: "https://fastapi.tiangolo.com/tutorial/background-tasks/" },
+
+  dockerCompose: { label: "Docker: Compose docs", url: "https://docs.docker.com/compose/" },
+  uvDocs: { label: "uv (Astral) docs", url: "https://docs.astral.sh/uv/" },
+  poetryDocs: { label: "Poetry docs", url: "https://python-poetry.org/docs/" },
+
+  pgvectorGitHub: { label: "pgvector README", url: "https://github.com/pgvector/pgvector" },
+  pgvectorNeon: { label: "Neon: pgvector extension", url: "https://neon.com/docs/extensions/pgvector" },
+  pgvectorSupabase: { label: "Supabase: pgvector concepts", url: "https://supabase.com/docs/guides/database/extensions/pgvector" },
+
+  langgraphOverview: { label: "LangGraph overview", url: "https://docs.langchain.com/oss/python/langgraph/overview" },
+  langgraphGraphApi: { label: "LangGraph Graph API", url: "https://docs.langchain.com/oss/python/langgraph/graph-api" },
+  langgraphCourse: { label: "LangChain Academy: Intro to LangGraph", url: "https://academy.langchain.com/courses/intro-to-langgraph" },
+
+  temporalWorkflows: { label: "Temporal: Workflows", url: "https://docs.temporal.io/workflows" },
+  temporalPythonDev: { label: "Temporal: Python developer guide", url: "https://docs.temporal.io/develop/python" },
+  temporalHelloPy: { label: "Temporal: Hello World in Python", url: "https://learn.temporal.io/getting_started/python/hello_world_in_python/" },
+  temporal101: { label: "Temporal 101 course", url: "https://learn.temporal.io/courses/temporal_101/" },
+
+  pydanticDurableTemporal: { label: "PydanticAI: Durable exec with Temporal", url: "https://ai.pydantic.dev/durable_execution/temporal/" },
+  pydanticTemporalExample: { label: "Example: pydantic-ai-temporal", url: "https://github.com/pydantic/pydantic-ai-temporal-example" },
+
+  otelTraces: { label: "OpenTelemetry: Traces concepts", url: "https://opentelemetry.io/docs/concepts/signals/traces/" },
+  otelPythonGettingStarted: { label: "OpenTelemetry Python: Getting started", url: "https://opentelemetry.io/docs/languages/python/getting-started/" },
+  otelPythonInstrumentation: { label: "OpenTelemetry Python: Instrumentation", url: "https://opentelemetry.io/docs/languages/python/instrumentation/" },
+
+  phoenixTracingTutorial: { label: "Phoenix: Tracing tutorial", url: "https://arize.com/docs/phoenix/tracing/tutorial" },
+  phoenixEvals: { label: "Phoenix: Evals overview", url: "https://arize.com/docs/phoenix/evaluation/llm-evals" },
+  phoenixEvalsOnTraces: { label: "Phoenix: Run evals on traces", url: "https://arize.com/docs/phoenix/tracing/how-to-tracing/feedback-and-annotations/evaluating-phoenix-traces" },
+
+  owaspPromptInjection: { label: "OWASP: LLM01 Prompt Injection", url: "https://genai.owasp.org/llmrisk/llm01-prompt-injection/" },
+  owaspCheatSheet: { label: "OWASP: Prompt Injection Prevention Cheat Sheet", url: "https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html" },
+
+  temporalVideos: { label: "Temporal YouTube playlist", url: "https://www.youtube.com/playlist?list=PLL6_RArGSORIs_ktGzwWPVkx2FCRpScZ-" },
+  otelVideo: { label: "YouTube: OpenTelemetry 101 (CNCF)", url: "https://www.youtube.com/watch?v=CB2nEcnBBcE" },
+  pgvectorVideo: { label: "YouTube: pgvector practical guide (Python)", url: "https://www.youtube.com/watch?v=PuHP3kktmQI" },
+
+  redisRateLimiting: { label: "Redis: Rate limiting glossary", url: "https://redis.io/glossary/rate-limiting/" },
+  kafkaQuickstart: { label: "Apache Kafka: Quickstart", url: "https://kafka.apache.org/quickstart/" },
+  celeryIntro: { label: "Celery: Introduction", url: "https://docs.celeryq.dev/en/v5.5.3/getting-started/introduction.html" },
+
+  githubPagesQuickstart: { label: "GitHub Pages: Quickstart", url: "https://docs.github.com/en/pages/quickstart" },
+  githubPagesPublishingSource: { label: "GitHub Pages: Configure publishing source", url: "https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" },
+};
+
+const plan = [
+  // WEEK 1 — Foundations (Agent + API skeleton)
+  day(1,1,"Mon","Project setup: repo + dev loop + local Postgres",
+    "Set up a clean, reproducible dev environment (Python env + lint/test) and a local Postgres using Docker Compose. This is your baseline for everything else in agentic infra: repeatable builds, fast feedback, and reliable local data.",
+    "Create a repo, add a minimal FastAPI app with /health, and run Postgres with Compose. If time allows, add a simple Makefile (or just npm-like scripts) to run: format, lint, test, and dev server.",
+    [
+      "Repo initialized + first commit",
+      "docker compose up runs Postgres successfully",
+      "FastAPI /health returns OK locally",
+      "One command to run tests (even if it's just a placeholder test)"
+    ],
+    [RESOURCE.uvDocs, RESOURCE.poetryDocs, RESOURCE.dockerCompose, RESOURCE.fastapiFirstSteps]
+  ),
+  day(1,2,"Tue","Hello agent: minimal run loop + structured output",
+    "Build your first small agent that reliably returns structured JSON (not free-form text). Most agentic infra jobs care about predictable outputs that downstream services can parse and validate.",
+    "Write a tiny CLI (or script) that calls an agent and prints JSON. Add a schema (even a simple dict spec) and fail fast if output is invalid. Save sample prompts + outputs in your repo.",
+    [
+      "Agent returns valid JSON for 5 different prompts",
+      "Invalid output is caught (and you can see an error)",
+      "You saved at least 5 prompt/output examples in a /notes folder"
+    ],
+    [RESOURCE.agentsSdkGuide, RESOURCE.agentsSdkPy, RESOURCE.openaiAgentsPracticalPdf]
+  ),
+  day(1,3,"Wed","Tools 101: one safe HTTP tool + one DB tool",
+    "Agentic infra is mostly about tools. Today you’ll add two tools: (1) a safe HTTP fetch (allowlist domains), and (2) a DB query tool (read-only for now).",
+    "Implement tools as normal Python functions, then expose them to the agent. Put guardrails in the tool layer (timeouts, allowlists, max rows). Log tool inputs/outputs at a high level (avoid secrets).",
+    [
+      "Agent can call the HTTP tool against an allowlisted domain",
+      "Agent can run a read-only DB query (e.g., select 5 rows)",
+      "Tools enforce timeouts and a max result size"
+    ],
+    [RESOURCE.agentsSdkAgents, RESOURCE.openaiAgentsPracticalPdf, RESOURCE.openaiAgentSafety]
+  ),
+  day(1,4,"Thu","Guardrails 101: prompt injection & tool safety",
+    "You’ll harden your agent against common prompt-injection patterns (e.g., “ignore previous instructions”, “exfiltrate secrets”). The goal is not perfection—it’s to build a layered safety approach: prompt + tool + policy checks.",
+    "Add input classification rules (even simple regex / heuristics) and tool-level policies: allowlists, read-only DB, deny sensitive endpoints, and require explicit user confirmation for risky actions.",
+    [
+      "You have a /security/redteam.md with 10 attack prompts",
+      "At least 8/10 attacks are blocked or safely handled",
+      "Tool layer prevents domain hopping + large exfiltration responses"
+    ],
+    [RESOURCE.openaiPromptInjections, RESOURCE.openaiAgentSafety, RESOURCE.owaspPromptInjection, RESOURCE.owaspCheatSheet]
+  ),
+  day(1,5,"Fri","Wrap it as a service: FastAPI endpoint + run storage",
+    "Turn your agent into a small service: an API endpoint that takes a request, runs the agent, and stores a run record. This is the first piece of “agent runtime infra.”",
+    "Create endpoints like POST /runs and GET /runs/{id}. Store: prompt, output JSON, tool calls summary, timestamps. Keep it simple—one table is enough for week 1.",
+    [
+      "POST /runs creates a run and returns run_id",
+      "GET /runs/{id} returns stored output",
+      "DB row includes timestamps + a short tool summary"
+    ],
+    [RESOURCE.fastapiFirstSteps, RESOURCE.dockerCompose]
+  ),
+
+  // WEEK 2 — RAG + State + Evaluations
+  day(2,1,"Mon","Add pgvector: schema + extension + first vector row",
+    "Most agentic apps need retrieval (RAG). Today you’ll enable pgvector, create a table for chunks, and insert a few embeddings (even synthetic vectors at first).",
+    "Enable pgvector, create a chunks table, and insert 3–5 sample rows. If you already know embeddings, plug real ones; otherwise use placeholder vectors and confirm similarity queries work.",
+    [
+      "pgvector extension enabled",
+      "chunks table created (id, text, embedding, metadata)",
+      "You can run a basic similarity query"
+    ],
+    [RESOURCE.pgvectorGitHub, RESOURCE.pgvectorNeon, RESOURCE.pgvectorSupabase]
+  ),
+  day(2,2,"Tue","Ingestion: chunking + embeddings pipeline (small)",
+    "Build a minimal ingestion pipeline: take a document, chunk it, embed chunks, store them. Keep it tiny (1–2 docs) so it fits in 1 hour.",
+    "Write ingest.py that reads a markdown or text file, chunks by heading/size, embeds, and stores. Track chunk_id → source → offsets so you can cite sources later.",
+    [
+      "You ingested at least 1 doc into chunks",
+      "Each chunk stores source metadata (filename, section)",
+      "Re-running ingestion is idempotent (no duplicates)"
+    ],
+    [RESOURCE.pgvectorGitHub, RESOURCE.openaiAgentsPracticalPdf]
+  ),
+  day(2,3,"Wed","Retrieval tool: “search_knowledge_base(query)”",
+    "Expose RAG as a tool the agent can call. This is classic agentic infra: the agent doesn’t query the DB directly; it uses a controlled retrieval tool with limits.",
+    "Implement search_knowledge_base(query, k=5) that returns top chunks plus metadata. Add a max tokens/characters limit in tool output to reduce prompt-injection via retrieved content.",
+    [
+      "Agent calls retrieval tool and uses returned chunks in answer",
+      "Tool enforces k-limit + output size limit",
+      "Response includes citations (chunk IDs or source sections)"
+    ],
+    [RESOURCE.pgvectorSupabase, RESOURCE.openaiAgentSafety, RESOURCE.owaspCheatSheet]
+  ),
+  day(2,4,"Thu","State & memory: keep context without leaking",
+    "Add short-term memory: store conversation state per run/session, but prevent cross-user leakage. This is a common production requirement in agent systems.",
+    "Add a session_id and store messages/steps. Ensure every query is scoped by session_id. Add a quick test that two sessions don’t see each other’s notes.",
+    [
+      "Two sessions run in parallel without state leakage",
+      "You can “resume” a session with prior context",
+      "You have a test (or script) proving isolation"
+    ],
+    [RESOURCE.openaiAgentSafety, RESOURCE.openaiAgentsPracticalPdf]
+  ),
+  day(2,5,"Fri","Evaluation harness: 10 golden questions + pass/fail",
+    "Agentic infra roles care about evaluation loops. You’ll create a tiny evaluation harness with 10 test prompts and a simple rubric (correct/incorrect).",
+    "Create evals.json with prompts + expected key points. Run them and record results. Keep it crude now—just establish the habit of regression testing.",
+    [
+      "10 prompts in a file",
+      "A script runs all prompts and saves outputs",
+      "You can see a pass/fail summary (even manual scoring)"
+    ],
+    [RESOURCE.openaiAgentsPracticalPdf, RESOURCE.phoenixEvals]
+  ),
+
+  // WEEK 3 — Orchestration patterns (planner/executor, HITL, policies, LangGraph intro)
+  day(3,1,"Mon","Orchestration: plan → execute → verify loop",
+    "Build a 3-step workflow: (1) plan steps, (2) execute tools, (3) verify output against a checklist. This is the simplest form of agent orchestration.",
+    "Implement a run loop that stores each step: plan text, tool calls, verification result. Keep verification minimal: schema check + “did we cite sources?”",
+    [
+      "Run has explicit steps (plan/execute/verify)",
+      "Verification can fail the run (and you see why)",
+      "Step logs are stored in DB"
+    ],
+    [RESOURCE.openaiAgentsPracticalPdf, RESOURCE.agentsSdkGuide]
+  ),
+  day(3,2,"Tue","Retries & timeouts: make failure predictable",
+    "Tool failures are normal. Today you’ll add retry logic, timeouts, and error classification (retryable vs non-retryable).",
+    "Wrap tools with: timeout, retry count, exponential backoff. Add one deliberately flaky tool (randomly fails) and prove your run still completes or exits cleanly.",
+    [
+      "Retries happen for transient errors",
+      "Timeouts prevent long hangs",
+      "Final run result includes a clear error summary if it fails"
+    ],
+    [RESOURCE.openaiAgentsPracticalPdf, RESOURCE.openaiAgentSafety]
+  ),
+  day(3,3,"Wed","Human-in-the-loop: approvals for risky tools",
+    "A real agent platform usually requires human approval for sensitive actions. You’ll add an approval gate: agent proposes an action, human approves/denies, then tool executes (or not).",
+    "Add a pending action table + endpoints to approve/deny. Modify your run loop to pause when approval is required and resume later.",
+    [
+      "Agent can create a “pending action”",
+      "Approval endpoint resumes the run",
+      "Denied actions end safely with an explanation"
+    ],
+    [RESOURCE.openaiAgentSafety, RESOURCE.openaiAgentsPracticalPdf]
+  ),
+  day(3,4,"Thu","Tool permissioning: policies per role/environment",
+    "Define who can do what. You’ll add simple policy rules: dev vs prod, admin vs user, read vs write. This is essential “agentic infra” work.",
+    "Create a policy layer that checks (role, environment, tool) before tool execution. Start with allow/deny lists and add a reason string for auditing.",
+    [
+      "Policy blocks unauthorized tool use",
+      "Blocked actions are logged with reason",
+      "You can switch policies via env var (DEV/PROD)"
+    ],
+    [RESOURCE.openaiAgentSafety, RESOURCE.owaspCheatSheet]
+  ),
+  day(3,5,"Fri","LangGraph intro: model your workflow as a graph",
+    "Many teams want explicit, testable graphs (nodes/edges) instead of “mystery agent loops”. You’ll model your plan/execute/verify flow as a small graph.",
+    "Follow the LangGraph quick concepts, create nodes for plan/execute/verify, and run a sample request end-to-end.",
+    [
+      "Graph runs end-to-end",
+      "You can see node-by-node outputs",
+      "You can re-run with deterministic state inputs"
+    ],
+    [RESOURCE.langgraphOverview, RESOURCE.langgraphGraphApi, RESOURCE.langgraphCourse]
+  ),
+
+  // WEEK 4 — Durable execution (Temporal)
+  day(4,1,"Mon","Temporal basics: run Hello World workflow locally",
+    "Durable execution means runs survive crashes, retries, and long waits. Today you’ll get Temporal running locally and complete a tiny workflow in Python.",
+    "Do the Temporal Python getting-started (hello workflow + activity). Keep it minimal: one activity call, one result.",
+    [
+      "Temporal dev server running",
+      "A workflow executes successfully",
+      "You understand workflow vs activity in your own words (write 3 lines)"
+    ],
+    [RESOURCE.temporal101, RESOURCE.temporalHelloPy, RESOURCE.temporalWorkflows]
+  ),
+  day(4,2,"Tue","Wrap tools as Temporal activities (durable tool calls)",
+    "A common agentic infra pattern: the workflow is durable, but tool calls are activities. You’ll move your tool calls into activities so retries/timeouts are managed by Temporal.",
+    "Create activities for (HTTP fetch, DB read, retrieval search). Update a workflow to call them in a safe order and store results.",
+    [
+      "At least 2 tools are implemented as Temporal activities",
+      "Activity retries work for transient errors",
+      "Results are stored and retrievable"
+    ],
+    [RESOURCE.temporalPythonDev, RESOURCE.temporalWorkflows]
+  ),
+  day(4,3,"Wed","Determinism & replay: keep workflows correct",
+    "Temporal workflows must be deterministic because they replay history. You’ll learn what breaks determinism (randomness, time) and how to fix it (activities, workflow-safe time).",
+    "Add a deliberate non-deterministic bug, see it fail, then refactor to keep non-deterministic parts in activities.",
+    [
+      "You can demonstrate a determinism failure and fix it",
+      "You understand what belongs in workflow vs activity",
+      "You wrote a short note: 'Temporal rules I will follow'"
+    ],
+    [RESOURCE.temporalWorkflows, RESOURCE.temporalPythonDev]
+  ),
+  day(4,4,"Thu","PydanticAI durable execution (optional but strong signal)",
+    "Many job posts mention durable agents. Today you’ll explore PydanticAI’s durable execution integration with Temporal to understand modern patterns for resilient agent runs.",
+    "Skim the docs and run (or read) the example. Focus on the idea: model/tool calls happen in activities, while the workflow controls progress and retries.",
+    [
+      "You can explain the architecture in 5–6 sentences",
+      "You saved a diagram (even ASCII) in your repo",
+      "Optional: you ran the example or adapted one piece"
+    ],
+    [RESOURCE.pydanticDurableTemporal, RESOURCE.pydanticTemporalExample]
+  ),
+  day(4,5,"Fri","Long-running runs: pause/resume + message passing",
+    "Agents often need to wait: approvals, external systems, scheduled retries. You’ll add pause/resume with Temporal signals/queries or explicit state transitions.",
+    "Add a workflow step that waits for an approval signal. Add a query endpoint to view current workflow state.",
+    [
+      "Workflow pauses without losing progress",
+      "You can resume via a signal/approval action",
+      "You can query current state without breaking determinism"
+    ],
+    [RESOURCE.temporalWorkflows, RESOURCE.temporalPythonDev]
+  ),
+
+  // WEEK 5 — Observability + Evals
+  day(5,1,"Mon","OpenTelemetry basics: add tracing to API requests",
+    "Observability is core agentic infra. Today you’ll add OpenTelemetry tracing around your FastAPI request and store trace IDs for debugging.",
+    "Instrument your app (auto or minimal manual). Ensure each API request creates a root span and child spans for major steps.",
+    [
+      "Traces appear in console (or collector) for each request",
+      "You can see child spans for plan/execute/verify",
+      "Trace ID is logged and attached to run record"
+    ],
+    [RESOURCE.otelTraces, RESOURCE.otelPythonGettingStarted, RESOURCE.otelPythonInstrumentation]
+  ),
+  day(5,2,"Tue","Trace tool calls: latency + outcome + attributes",
+    "You’ll trace tool calls with useful attributes: tool name, duration, success/failure, and safe metadata. This makes debugging “why did the agent do that?” much easier.",
+    "Wrap each tool/activity call in a span. Add attributes like tool.name, http.status_code (if safe), db.rows_returned, retries.count.",
+    [
+      "Every tool call creates a span",
+      "Failures include an error event on the span",
+      "You can identify slow tools from trace view/logs"
+    ],
+    [RESOURCE.otelPythonInstrumentation, RESOURCE.otelTraces]
+  ),
+  day(5,3,"Wed","Phoenix (or similar): visualize traces for LLM apps",
+    "Agentic infra teams want LLM-aware tracing. Today you’ll send traces to Phoenix (local) or at least follow the tutorial to understand LLM span conventions.",
+    "Follow the Phoenix tracing tutorial and connect your app. Focus on: grouping spans, viewing tool calls, and drilling into a single run.",
+    [
+      "You can open a trace view and follow one request end-to-end",
+      "You can filter spans by tool or status",
+      "You saved 2 screenshots/notes in your repo"
+    ],
+    [RESOURCE.phoenixTracingTutorial, RESOURCE.otelPythonGettingStarted]
+  ),
+  day(5,4,"Thu","Evals on traces: build a regression loop",
+    "Now connect quality to observability: run evaluations on real traces and store results. This is how teams prevent regressions when prompts/tools change.",
+    "Pick 5–10 traces (runs), export them (or use your stored outputs), run evals (LLM judge or simple heuristic), and record scores.",
+    [
+      "You can run evals and see scores per run",
+      "You added a 'quality_score' field to your run record",
+      "You can compare scores before/after a prompt change"
+    ],
+    [RESOURCE.phoenixEvals, RESOURCE.phoenixEvalsOnTraces]
+  ),
+  day(5,5,"Fri","Security regression: prompt injection tests + tool misuse",
+    "Add a repeatable security test set: prompt injection attempts + tool misuse attempts. Treat it like unit tests—run it before you ship changes.",
+    "Write a small script that runs your red-team prompts and confirms safe outcomes: refusal, policy block, or user-confirmation required.",
+    [
+      "Security suite runs in <2 minutes",
+      "Results are saved with timestamp",
+      "At least 1 new test added from something you learned this week"
+    ],
+    [RESOURCE.openaiPromptInjections, RESOURCE.openaiAgentSafety, RESOURCE.owaspCheatSheet]
+  ),
+
+  // WEEK 6 — Production hardening (cost, reliability, release readiness)
+  day(6,1,"Mon","Cost controls: budgets, rate limits, max-tool-usage",
+    "Real systems have guardrails for spend and abuse. Today you’ll add per-run budgets: max tokens, max tool calls, and request rate limiting.",
+    "Add a config file with caps and enforce them in the run loop. Implement a simple API key + per-key request limiter (even in-memory for now).",
+    [
+      "Run stops when budget exceeded (cleanly)",
+      "Tool calls are capped per run",
+      "Basic rate limiting is working"
+    ],
+    [RESOURCE.openaiAgentSafety, RESOURCE.redisRateLimiting]
+  ),
+  day(6,2,"Tue","Secrets & permissions: tighten the blast radius",
+    "You’ll ensure secrets never enter prompts or logs, and restrict tool capabilities by default. This is the 'least privilege' mindset for agents.",
+    "Audit env vars/logging. Mask secrets. Ensure tools require explicit allowlists and default to deny. Add a 'safe logging' helper.",
+    [
+      "Secrets are masked in logs",
+      "Tools deny by default (need allowlist)",
+      "You have a short 'security checklist' doc"
+    ],
+    [RESOURCE.openaiAgentSafety, RESOURCE.owaspCheatSheet]
+  ),
+  day(6,3,"Wed","Multi-tenant isolation: scoping everywhere",
+    "Production agents often serve multiple orgs/users. Today you’ll add tenant/user scoping to DB queries, retrieval, and run records.",
+    "Add tenant_id to tables and enforce it in every query. Add a test that tenant A cannot read tenant B’s runs or chunks.",
+    [
+      "All tables have tenant_id (or equivalent scope)",
+      "Queries always include tenant scoping",
+      "A test proves cross-tenant access is blocked"
+    ],
+    [RESOURCE.openaiAgentSafety]
+  ),
+  day(6,4,"Thu","Release readiness: CI checks + a 'smoke run'",
+    "Add a minimal CI pipeline: run lint/tests and a smoke run that hits /health and runs 1 agent request (mocked if needed).",
+    "Create GitHub Actions workflow to run unit tests and your eval harness on PRs. Keep it simple but real.",
+    [
+      "CI runs on push/PR",
+      "Smoke test passes (health + 1 run)",
+      "Failures are actionable (clear logs)"
+    ],
+    [RESOURCE.fastapiFirstSteps, RESOURCE.githubPagesQuickstart]
+  ),
+  day(6,5,"Fri","Polish week: README + architecture + demo script",
+    "Package your work like an engineer: clear README, architecture diagram (simple), and a demo script that anyone can run in 5–10 minutes.",
+    "Write README: setup, run, endpoints, how to add tools, how to run evals. Add a short demo script that runs a RAG query and prints citations.",
+    [
+      "README makes the project runnable from scratch",
+      "Demo script works end-to-end",
+      "You can explain the architecture in 2 minutes"
+    ],
+    [RESOURCE.openaiAgentsPracticalPdf, RESOURCE.temporalWorkflows, RESOURCE.otelTraces]
+  ),
+
+  // WEEK 7 — OPTIONAL: Scaling patterns (queues, background jobs, parallelism)
+  day(7,1,"Mon","Background jobs: move slow work off the request path",
+    "When requests get slow (RAG ingestion, long tool calls), you move work to background jobs. Today you’ll add a background job for ingestion or heavy retrieval prep.",
+    "Start with FastAPI BackgroundTasks (simple). If you already know queues, add Celery as a stretch. Store job status in DB.",
+    [
+      "A request triggers a background job",
+      "Job status can be checked later",
+      "Failures are recorded with a reason"
+    ],
+    [RESOURCE.fastapiBackground, RESOURCE.celeryIntro]
+  ),
+  day(7,2,"Tue","Queueing: introduce a real task queue conceptually",
+    "Agent platforms often need reliable queues. Today is about understanding the tradeoffs: at-least-once delivery, idempotency, retries, and monitoring.",
+    "Sketch a design: API enqueues work, workers process, status stored. Optionally wire Celery + Redis locally (small).",
+    [
+      "You can explain at-least-once vs exactly-once",
+      "You wrote an idempotency strategy for your jobs",
+      "Optional: a worker processes a queued task locally"
+    ],
+    [RESOURCE.celeryIntro, RESOURCE.redisRateLimiting]
+  ),
+  day(7,3,"Wed","Event streaming (optional): Kafka mental model",
+    "Some teams use Kafka for events (tool call logs, audit trails, offline eval pipelines). Today is to learn the mental model and where it fits.",
+    "Read the quickstart and write a short note: what would you publish as events from your agent runtime? (runs, tool calls, eval scores).",
+    [
+      "You can explain topic/partition/consumer group",
+      "You drafted 3 event types you’d emit from your system",
+      "Optional: you ran a local Kafka quickstart"
+    ],
+    [RESOURCE.kafkaQuickstart]
+  ),
+  day(7,4,"Thu","Parallel tool calls + fan-out/fan-in pattern",
+    "A big performance win: parallelize independent tool calls (e.g., search multiple sources) and merge results deterministically.",
+    "Implement a run step that issues multiple retrievals in parallel (async or workers), then merges and verifies results before responding.",
+    [
+      "Parallel calls reduce total latency (measurably)",
+      "Merge step is deterministic and validated",
+      "Trace shows parallel spans"
+    ],
+    [RESOURCE.otelTraces, RESOURCE.langgraphOverview]
+  ),
+  day(7,5,"Fri","Load test & SLO thinking (lightweight)",
+    "Agent systems need SLOs: p95 latency, error rate, cost per request. Today: define your SLOs and do a tiny load test.",
+    "Pick 2 metrics (p95 latency and success rate). Run a small burst (even 20 requests). Record results and identify your top bottleneck.",
+    [
+      "You wrote 2–3 SLO targets",
+      "You ran a small load test and captured numbers",
+      "You identified and logged one bottleneck + fix idea"
+    ],
+    [RESOURCE.otelTraces]
+  ),
+
+  // WEEK 8 — OPTIONAL: Portfolio + interview prep
+  day(8,1,"Mon","System design write-up: 'Agent Runtime Platform v1'",
+    "Interviewers want coherent architecture. Today you’ll write a short system design doc for your project: components, data flow, failure modes, and security posture.",
+    "Write a 1–2 page doc: API, orchestrator, tools, DB, vector store, workflow engine, observability, eval pipeline.",
+    [
+      "You have a clear diagram and component list",
+      "You covered failures + retries + idempotency",
+      "You described safety layers (prompt/tool/policy)"
+    ],
+    [RESOURCE.openaiAgentsPracticalPdf, RESOURCE.openaiAgentSafety]
+  ),
+  day(8,2,"Tue","Deploy locally like production: Docker-only run",
+    "Make the whole stack run with one command: API + Postgres + (optional) Temporal + (optional) Phoenix.",
+    "Update your docker compose file and README. Ensure environment variables are documented and defaults are safe.",
+    [
+      "One command starts the entire stack",
+      "README includes required env vars",
+      "Health endpoints confirm dependencies are up"
+    ],
+    [RESOURCE.dockerCompose, RESOURCE.temporalWorkflows]
+  ),
+  day(8,3,"Wed","Optional: local Kubernetes with kind (confidence boost)",
+    "If agentic infra roles mention Kubernetes, show you can deploy your service on a local cluster. Keep it light: Deployment + Service + env vars.",
+    "Use kind to create a cluster, apply manifests, and port-forward. Don’t over-engineer—just prove you can ship containers.",
+    [
+      "kind cluster runs locally",
+      "Your API runs in k8s and responds",
+      "You documented basic manifests"
+    ],
+    [
+      {label:"kind docs", url:"https://kind.sigs.k8s.io/"},
+      {label:"Kubernetes HPA concepts", url:"https://kubernetes.io/docs/concepts/workloads/autoscaling/horizontal-pod-autoscale/"}
+    ]
+  ),
+  day(8,4,"Thu","CI polish: tighten checks + add a regression gate",
+    "Upgrade CI from “runs tests” to “blocks regressions.” Add an eval gate: if quality_score drops, fail the pipeline (even with a small threshold).",
+    "Add a GitHub Actions job that runs evals on a small fixed dataset and fails if below threshold. Record baseline scores.",
+    [
+      "CI fails on quality regression",
+      "You have baseline scores committed",
+      "Logs tell you exactly which prompt failed"
+    ],
+    [
+      {label:"GitHub Actions docs", url:"https://docs.github.com/actions"},
+      RESOURCE.phoenixEvals
+    ]
+  ),
+  day(8,5,"Fri","Interview day: 2-minute demo + 5-minute deep dive",
+    "Package your story: (1) quick demo, (2) architecture deep dive, (3) tradeoffs. This is what converts into offers for agentic infra roles.",
+    "Practice: 2-min demo (run -> trace -> eval), then 5-min deep dive (durable exec, safety, observability, scaling). Write your talking points in notes.",
+    [
+      "You can demo in 2 minutes reliably",
+      "You can explain 3 design tradeoffs",
+      "You have a short 'FAQ' for interview questions"
+    ],
+    [RESOURCE.openaiAgentsPracticalPdf, RESOURCE.temporal101, RESOURCE.otelTraces]
+  ),
+];
+
+function day(week, idx, dow, title, learn, how, doneList, resources){
+  return {
+    id: `w${week}d${idx}`,
+    week,
+    dow,
+    title,
+    learn,
+    how,
+    done: doneList,
+    resources: resources || [],
+    optional: week >= 7
+  };
+}
+
+// ---------- state ----------
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return { done:{}, notes:{}, ui:{ hideDone:false, showOptional:true, search:"" } };
+    const parsed = JSON.parse(raw);
+    return {
+      done: parsed.done || {},
+      notes: parsed.notes || {},
+      ui: parsed.ui || { hideDone:false, showOptional:true, search:"" }
+    };
+  }catch{
+    return { done:{}, notes:{}, ui:{ hideDone:false, showOptional:true, search:"" } };
+  }
+}
+function saveState(state){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+let state = loadState();
+
+// ---------- helpers ----------
+const $ = (sel)=>document.querySelector(sel);
+
+function toast(msg){
+  const t = $("#toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast._timer);
+  toast._timer = setTimeout(()=>t.classList.remove("show"), 2400);
+}
+
+function pct(part, total){
+  if(total <= 0) return 0;
+  return Math.round((part/total)*100);
+}
+
+function matchesSearch(dayObj, q){
+  if(!q) return true;
+  const s = q.toLowerCase();
+  const blob = [
+    dayObj.title, dayObj.learn, dayObj.how,
+    ...(dayObj.done||[]),
+    ...(dayObj.resources||[]).map(r=>r.label + " " + r.url),
+  ].join(" ").toLowerCase();
+  return blob.includes(s);
+}
+
+function weekSummary(week){
+  const days = plan.filter(d=>d.week===week);
+  const doneCount = days.filter(d=>!!state.done[d.id]).length;
+  return { total: days.length, done: doneCount, pct: pct(doneCount, days.length) };
+}
+
+function overallSummary(){
+  const visible = plan.filter(d=>{
+    if(!$("#showOptional").checked && d.optional) return false;
+    if(!matchesSearch(d, $("#search").value.trim())) return false;
+    if($("#hideDone").checked && state.done[d.id]) return false;
+    return true;
+  });
+  const all = plan.filter(d=> !d.optional || $("#showOptional").checked );
+  const doneCount = all.filter(d=>!!state.done[d.id]).length;
+  return { visible, all, done: doneCount, total: all.length, pct: pct(doneCount, all.length) };
+}
+
+function render(){
+  // sync UI state
+  $("#hideDone").checked = !!state.ui.hideDone;
+  $("#showOptional").checked = state.ui.showOptional !== false;
+  $("#search").value = state.ui.search || "";
+
+  const weeksRoot = $("#weeks");
+  weeksRoot.innerHTML = "";
+
+  const showOptional = $("#showOptional").checked;
+  const hideDone = $("#hideDone").checked;
+  const q = $("#search").value.trim();
+
+  // overall progress uses all weeks (including optional toggle)
+  const allDays = plan.filter(d => showOptional ? true : !d.optional);
+  const doneCount = allDays.filter(d=>!!state.done[d.id]).length;
+  $("#overallNumbers").textContent = `${doneCount} / ${allDays.length}`;
+  $("#overallBar").style.width = `${pct(doneCount, allDays.length)}%`;
+
+  const weeks = [...new Set(plan.map(d=>d.week))].sort((a,b)=>a-b);
+
+  for(const w of weeks){
+    const isOpt = w >= 7;
+    if(isOpt && !showOptional) continue;
+
+    const wDays = plan.filter(d=>d.week===w)
+      .filter(d=>matchesSearch(d, q))
+      .filter(d=> !(hideDone && state.done[d.id]) );
+
+    const wAll = plan.filter(d=>d.week===w);
+    const wDone = wAll.filter(d=>!!state.done[d.id]).length;
+
+    // if searching/hiding removes all days, hide the whole week card
+    if(wDays.length===0) continue;
+
+    const weekCard = document.createElement("div");
+    weekCard.className = "weekCard";
+
+    const head = document.createElement("div");
+    head.className = "weekHead";
+
+    const weekTitle = document.createElement("div");
+    weekTitle.className = "weekTitle";
+    const b = document.createElement("b");
+    b.textContent = `Week ${w}${isOpt ? " (Optional)" : ""}`;
+    const span = document.createElement("span");
+    span.textContent = weekTheme(w);
+    weekTitle.appendChild(b);
+    weekTitle.appendChild(span);
+
+    const meta = document.createElement("div");
+    meta.className = "weekMeta";
+    meta.textContent = `${wDone}/${wAll.length}  •  ${pct(wDone, wAll.length)}%`;
+
+    head.appendChild(weekTitle);
+    head.appendChild(meta);
+
+    const body = document.createElement("div");
+    body.className = "weekBody";
+
+    for(const d of wDays){
+      body.appendChild(renderDay(d));
+    }
+
+    weekCard.appendChild(head);
+    weekCard.appendChild(body);
+
+    weeksRoot.appendChild(weekCard);
+  }
+}
+
+function weekTheme(w){
+  switch(w){
+    case 1: return "Foundations: agent + tools + API skeleton";
+    case 2: return "RAG + state + eval harness";
+    case 3: return "Orchestration patterns + policies + LangGraph";
+    case 4: return "Durable execution with Temporal";
+    case 5: return "Observability + evaluations on traces";
+    case 6: return "Production hardening + release readiness";
+    case 7: return "Scaling: background jobs, queues, parallelism";
+    case 8: return "Portfolio: deploy, docs, interview story";
+    default: return "";
+  }
+}
+
+function renderDay(d){
+  const det = document.createElement("details");
+  det.className = "day";
+
+  const sum = document.createElement("summary");
+  sum.className = "daySum";
+
+  const left = document.createElement("div");
+  left.className = "dayLeft";
+
+  const checkWrap = document.createElement("div");
+  checkWrap.className = "check";
+
+  const cb = document.createElement("input");
+  cb.type = "checkbox";
+  cb.checked = !!state.done[d.id];
+  cb.addEventListener("click", (e)=>e.stopPropagation());
+  cb.addEventListener("change", ()=>{
+    state.done[d.id] = cb.checked;
+    saveUI();
+    saveState(state);
+    render();
+  });
+
+  checkWrap.appendChild(cb);
+
+  const name = document.createElement("div");
+  name.className = "dayName";
+  const t = document.createElement("div");
+  t.className = "t";
+  t.textContent = `${d.dow}: ${d.title}`;
+  const s = document.createElement("div");
+  s.className = "s";
+  s.textContent = `Target: ~60 minutes • Deliverable + definition-of-done`;
+  name.appendChild(t);
+  name.appendChild(s);
+
+  left.appendChild(checkWrap);
+  left.appendChild(name);
+
+  const right = document.createElement("div");
+  const chip = document.createElement("span");
+  chip.className = "chip";
+  chip.textContent = d.optional ? "Optional" : "Core";
+  right.appendChild(chip);
+
+  sum.appendChild(left);
+  sum.appendChild(right);
+
+  const content = document.createElement("div");
+  content.className = "dayContent";
+
+  // Left column: guidance + DoD
+  const box1 = document.createElement("div");
+  box1.className = "box";
+  box1.innerHTML = `
+    <h4>What you’ll learn today</h4>
+    <p>${escapeHtml(d.learn)}</p>
+    <h4>How you’ll do it</h4>
+    <p>${escapeHtml(d.how)}</p>
+    <h4>How you’ll know you completed it</h4>
+    <ul>${(d.done||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
+  `;
+
+  // Right column: notes + resources
+  const box2 = document.createElement("div");
+  box2.className = "box";
+  const notesId = `notes_${d.id}`;
+  box2.innerHTML = `
+    <h4>Notes (saved automatically)</h4>
+    <textarea class="notes" id="${notesId}" placeholder="What worked? What broke? What will you change tomorrow?"></textarea>
+    <div class="resList" id="res_${d.id}">
+      <div class="muted" style="font-size:12.5px; margin-top:6px;"><b>References</b></div>
+    </div>
+  `;
+
+  content.appendChild(box1);
+  content.appendChild(box2);
+
+  det.appendChild(sum);
+  det.appendChild(content);
+
+  // notes binding
+  setTimeout(()=>{
+    const ta = document.getElementById(notesId);
+    ta.value = state.notes[d.id] || "";
+    ta.addEventListener("input", ()=>{
+      state.notes[d.id] = ta.value;
+      saveUI();
+      saveState(state);
+    });
+
+    // resources
+    const resRoot = document.getElementById(`res_${d.id}`);
+    const items = (d.resources||[]);
+    if(items.length===0){
+      const div = document.createElement("div");
+      div.className = "resItem";
+      div.innerHTML = `<span>•</span><span class="muted">No links for this day (use your project docs/notes).</span>`;
+      resRoot.appendChild(div);
+    }else{
+      for(const r of items){
+        const div = document.createElement("div");
+        div.className = "resItem";
+        div.innerHTML = `<span>•</span><span><b>${escapeHtml(r.label)}:</b> <a href="${r.url}" target="_blank" rel="noreferrer">${escapeHtml(r.url)}</a></span>`;
+        resRoot.appendChild(div);
+      }
+    }
+  }, 0);
+
+  return det;
+}
+
+function escapeHtml(s){
+  return String(s)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll("\"","&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function saveUI(){
+  state.ui.hideDone = $("#hideDone").checked;
+  state.ui.showOptional = $("#showOptional").checked;
+  state.ui.search = $("#search").value || "";
+}
+
+// ---------- export/import/reset ----------
+function download(filename, text){
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([text], {type: "application/json"}));
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+}
+
+$("#exportBtn").addEventListener("click", ()=>{
+  const payload = {
+    version: 1,
+    exported_at: new Date().toISOString(),
+    state
+  };
+  download("agentic-infra-progress.json", JSON.stringify(payload, null, 2));
+  toast("Exported progress JSON.");
+});
+
+$("#importBtn").addEventListener("click", ()=>{
+  $("#importFile").click();
+});
+
+$("#importFile").addEventListener("change", async (e)=>{
+  const file = e.target.files?.[0];
+  if(!file) return;
+  try{
+    const text = await file.text();
+    const payload = JSON.parse(text);
+    if(!payload?.state) throw new Error("Invalid file format.");
+    state = payload.state;
+    saveState(state);
+    render();
+    toast("Imported progress.");
+  }catch(err){
+    toast("Import failed: " + (err?.message || "Unknown error"));
+  }finally{
+    e.target.value = "";
+  }
+});
+
+$("#resetBtn").addEventListener("click", ()=>{
+  const ok = confirm("Reset ALL checkmarks + notes? This cannot be undone.");
+  if(!ok) return;
+  state = { done:{}, notes:{}, ui: { hideDone:false, showOptional:true, search:"" } };
+  saveState(state);
+  render();
+  toast("Reset complete.");
+});
+
+// ---------- filters ----------
+$("#hideDone").addEventListener("change", ()=>{ saveUI(); saveState(state); render(); });
+$("#showOptional").addEventListener("change", ()=>{ saveUI(); saveState(state); render(); });
+$("#search").addEventListener("input", ()=>{ saveUI(); saveState(state); render(); });
+
+// initial render
+render();
+</script>
+</body>
+</html>

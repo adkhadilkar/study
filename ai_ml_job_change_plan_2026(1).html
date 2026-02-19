@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI/ML 8-Month Plan (15-day sprints)</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #121a33;
+      --muted: #9fb0d0;
+      --text: #e7eefc;
+      --accent: #6aa9ff;
+      --good: #46d39a;
+      --border: rgba(255,255,255,0.10);
+    }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      background: radial-gradient(1200px 600px at 10% 0%, rgba(106,169,255,0.18), transparent 60%),
+                  radial-gradient(900px 600px at 90% 20%, rgba(70,211,154,0.12), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.35;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 40px; }
+    header { display: grid; gap: 10px; margin-bottom: 18px; }
+    .title { font-size: 22px; font-weight: 800; }
+    .subtitle { color: var(--muted); font-size: 14px; max-width: 85ch; }
+    .topbar {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      align-items: center; justify-content: space-between;
+      margin: 14px 0 10px; padding: 12px;
+      border: 1px solid var(--border); border-radius: 14px;
+      background: rgba(18,26,51,0.6); backdrop-filter: blur(8px);
+    }
+    .pill {
+      display: inline-flex; gap: 8px; align-items: center;
+      padding: 6px 10px; border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted); font-size: 12px; white-space: nowrap;
+    }
+    .btns { display: flex; gap: 8px; align-items: center; }
+    button {
+      cursor: pointer; border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04); color: var(--text);
+      border-radius: 12px; padding: 9px 12px; font-weight: 700;
+    }
+    button:hover { background: rgba(255,255,255,0.07); }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 980px) {
+      .grid { grid-template-columns: 1.2fr 0.8fr; align-items: start; }
+    }
+    .card {
+      border: 1px solid var(--border); border-radius: 16px;
+      background: rgba(18,26,51,0.75); backdrop-filter: blur(8px);
+      padding: 14px;
+    }
+    .card h2 { margin: 0 0 8px; font-size: 18px; }
+    .muted { color: var(--muted); }
+    .section-title {
+      margin: 14px 0 8px; font-size: 13px;
+      letter-spacing: 0.6px; text-transform: uppercase; color: var(--muted);
+    }
+    ul { margin: 8px 0 0 18px; }
+    li { margin: 6px 0; }
+    .checklist li {
+      list-style: none; margin-left: -18px;
+      display: flex; gap: 10px; align-items: flex-start;
+      padding: 8px 10px; border-radius: 12px;
+    }
+    .checklist li:hover { background: rgba(255,255,255,0.04); }
+    input[type="checkbox"] { margin-top: 3px; transform: scale(1.18); accent-color: var(--accent); }
+    .progress {
+      width: 260px; max-width: 100%; height: 10px;
+      border-radius: 999px; background: rgba(255,255,255,0.07);
+      overflow: hidden; border: 1px solid var(--border);
+    }
+    .progress > div {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--good));
+    }
+    .mini { font-size: 12px; color: var(--muted); }
+    .kbd {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px; padding: 2px 6px; border-radius: 8px;
+      border: 1px solid var(--border); background: rgba(255,255,255,0.04);
+      color: var(--text);
+    }
+    .small-card {
+      border: 1px solid var(--border); border-radius: 14px;
+      background: rgba(255,255,255,0.03); padding: 12px;
+    }
+    .tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 10px; border-radius: 999px;
+      background: rgba(106,169,255,0.10);
+      border: 1px solid rgba(106,169,255,0.25);
+      color: var(--text); font-size: 12px;
+      margin-right: 8px; margin-top: 6px; white-space: nowrap;
+    }
+    .task-meta {
+      display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+      margin-top: 3px;
+    }
+    .chip {
+      font-size: 11px; color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 2px 8px;
+      background: rgba(255,255,255,0.03);
+    }
+    .expect {
+      margin-top: 4px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .footer { margin-top: 18px; color: var(--muted); font-size: 12px; }
+    .week-head {
+      margin: 10px 0 6px;
+      padding: 6px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      font-weight: 800;
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">AI/ML 8-Month Plan (Go + DevOps + Postgres → High-Paid AI/LLM Engineer)</div>
+      <div class="subtitle">
+        16 sprints × 15 days. Each sprint shows exactly what to build, how long it should take, and how to verify results.
+        Checkboxes are saved in your browser (localStorage). Use <span class="kbd">←</span> and <span class="kbd">→</span> keys.
+      </div>
+    </header>
+
+    <div class="topbar">
+      <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+        <span class="pill" id="sprintPill">Sprint</span>
+        <span class="pill" id="datePill">Dates</span>
+        <span class="pill" id="timePill">Time</span>
+        <span class="pill"><span class="mini">Done</span> <span id="pct" style="color:var(--text); font-weight:800;">0%</span></span>
+        <div class="progress" aria-label="progress"><div id="bar"></div></div>
+        <span class="pill"><span class="mini">Hours done</span> <span id="hrs" style="color:var(--text); font-weight:800;">0/0</span></span>
+      </div>
+      <div class="btns">
+        <button id="prevBtn">← Prev</button>
+        <button id="nextBtn">Next →</button>
+        <button id="resetBtn" title="Resets all checkboxes for this sprint">Reset Sprint</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2 id="sprintTitle">Sprint</h2>
+        <div class="muted" id="simpleLine"></div>
+
+        <div class="section-title">What you’ll do (checklist)</div>
+        <div class="week-head" id="w1Head">Week 1</div>
+        <ul class="checklist" id="taskListW1"></ul>
+        <div class="week-head" id="w2Head">Week 2</div>
+        <ul class="checklist" id="taskListW2"></ul>
+
+        <div class="section-title">How you’ll know you achieved it (Definition of Done)</div>
+        <ul id="validateList"></ul>
+
+        <div class="section-title">GitHub artifacts to publish</div>
+        <ul id="ghList"></ul>
+      </div>
+
+      <div class="card">
+        <h2>Always-on sprint scoreboard</h2>
+        <div class="small-card">
+          <div class="muted">Every 15 days, end with:</div>
+          <ul class="checklist" id="scoreboard"></ul>
+          <div class="mini">Rule: if you can't demo it, recruiters won't believe it.</div>
+        </div>
+
+        <div class="section-title">Recommended resources for this sprint</div>
+        <ul id="resList"></ul>
+
+        <div class="section-title">Pinned GitHub portfolio</div>
+        <div class="small-card">
+          <div class="tag">rag-prod-assistant</div>
+          <div class="tag">llm-serving-lab</div>
+          <div class="tag">ai-system-design-notes</div>
+          <div class="tag">go-loadtest-kit</div>
+          <div class="tag">mini-ml-lab (optional)</div>
+          <div class="footer">Keep it clean: demo + metrics + CI green.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Assumption: ~8–12 hrs/week. If you can do 15–20 hrs/week, you can compress the plan.
+    </div>
+  </div>
+
+<script>
+const SPRINTS = [{"title": "Bootstrap: repo skeleton + CI + Docker", "simple": "Create a production-quality FastAPI repo you can confidently build on for the next 8 months.", "tasks": [{"week": 1, "hours": 2.0, "text": "Create repo structure (src/, tests/, scripts/, docs/) + basic FastAPI app with `/health`.", "expect": "Repo runs locally; `/health` returns 200."}, {"week": 1, "hours": 1.5, "text": "Add config management (env vars) + typed settings (Pydantic) + `.env.example`.", "expect": "Settings load cleanly; no secrets committed."}, {"week": 1, "hours": 2.0, "text": "Add dev tooling: ruff + formatting + pre-commit hooks.", "expect": "One command checks style locally."}, {"week": 1, "hours": 2.0, "text": "Add pytest + at least 5 small tests (health, config, utils).", "expect": "Tests pass locally and in CI."}, {"week": 2, "hours": 2.0, "text": "Add Dockerfile + docker-compose for app + Postgres + Redis.", "expect": "`docker compose up` boots everything."}, {"week": 2, "hours": 2.0, "text": "Add GitHub Actions CI: lint + tests + build container.", "expect": "CI green on clean checkout."}, {"week": 2, "hours": 1.5, "text": "Add structured JSON logging + request ID middleware.", "expect": "Logs include request_id and endpoint."}, {"week": 2, "hours": 1.0, "text": "Write README: how to run, how to test, what this project is.", "expect": "README enables anyone to run in <10 min."}], "validate": ["Fresh machine can run `docker compose up` and open `/docs` without manual steps.", "CI runs lint + tests on every PR and is consistently green.", "You can add a new endpoint + test in <30 minutes."], "github_artifacts": ["Repo badges: CI + lint + tests", "Short demo GIF/video in README showing `/docs` and a test run"], "resources": ["FastAPI Tutorial: First Steps", "Pydantic v2 docs", "pytest: Getting Started", "Ruff linter docs", "YouTube: FastAPI (freeCodeCamp)"], "num": 1, "start": "2026-02-06", "end": "2026-02-20", "week1_hours": 7.5, "week2_hours": 6.5, "sprint_hours": 14.0}, {"title": "Vectors 101: pgvector schema + ingestion + similarity search", "simple": "Make Postgres store embeddings and perform fast similarity search for RAG.", "tasks": [{"week": 1, "hours": 1.5, "text": "Enable `pgvector` in local Postgres container and verify with a small SQL query.", "expect": "You can `SELECT '[1,2,3]'::vector;` successfully."}, {"week": 1, "hours": 2.5, "text": "Design schema: documents, chunks, embeddings (include metadata fields like source, page, timestamp).", "expect": "SQL migrations exist; schema diagram in docs."}, {"week": 1, "hours": 2.5, "text": "Write ingestion pipeline: load markdown/text \u2192 chunk with overlap \u2192 store chunks + metadata.", "expect": "Ingest script processes a folder into DB."}, {"week": 1, "hours": 2.0, "text": "Add embedding generation step (provider or local model) and store vectors.", "expect": "Chunks have vectors in DB."}, {"week": 2, "hours": 2.0, "text": "Add vector index (ivfflat/hnsw depending on setup) + document it.", "expect": "Similarity queries are fast and repeatable."}, {"week": 2, "hours": 2.5, "text": "Implement `similarity_search(query, top_k, filters)` with scores and metadata.", "expect": "Function returns top-k relevant chunks."}, {"week": 2, "hours": 2.0, "text": "Add tests: insert known vectors and validate nearest neighbor ordering.", "expect": "Tests prove search correctness."}, {"week": 2, "hours": 1.0, "text": "Add `make ingest` + `make search` commands for quick demos.", "expect": "One-liners show ingestion + retrieval working."}], "validate": ["A query retrieves the correct chunk from your sample docs with a sensible score ordering.", "Migrations and indexes are documented and reproducible.", "Tests cover schema + search logic."], "github_artifacts": ["Migrations + sample docs in `examples/`", "A `demo.md` showing ingestion + sample queries + outputs"], "resources": ["pgvector (Postgres vector extension)", "FastAPI: SQL (Relational) Databases (SQLModel example)"], "num": 2, "start": "2026-02-21", "end": "2026-03-07", "week1_hours": 8.5, "week2_hours": 7.5, "sprint_hours": 16.0}, {"title": "RAG baseline: /ask endpoint + citations + minimal UI/CLI", "simple": "Build a working Q&A API that answers using your docs and shows citations (sources).", "tasks": [{"week": 1, "hours": 2.0, "text": "Create `/ask` endpoint (request: question; response: answer + citations + chunk_ids).", "expect": "API returns answer + citation list."}, {"week": 1, "hours": 2.0, "text": "Create prompt template that forces: answer only from retrieved chunks; say 'I don\u2019t know' otherwise.", "expect": "Prompt file is versioned and documented."}, {"week": 1, "hours": 2.0, "text": "Implement context budgeting: limit tokens/characters from chunks; keep top chunks.", "expect": "No oversized prompts; stable latency."}, {"week": 1, "hours": 2.0, "text": "Add citation formatting (source, page/section) and include in response.", "expect": "Citations are human-readable and accurate."}, {"week": 2, "hours": 2.0, "text": "Optional but strong: reranking step (simple heuristic or model) to improve relevance.", "expect": "Better retrieval quality on tricky questions."}, {"week": 2, "hours": 2.0, "text": "Build a tiny client: CLI or simple HTML page to ask questions.", "expect": "A non-engineer can try your demo."}, {"week": 2, "hours": 2.5, "text": "Create 20 sample questions + expected citations in `demo_questions.json`.", "expect": "You have a repeatable demo set."}, {"week": 2, "hours": 1.5, "text": "Write architecture section in README (diagram + request flow).", "expect": "Clear explanation for recruiters."}], "validate": ["For 20 sample questions, answers include citations pointing to the right chunk/section.", "When retrieval is weak, the system refuses or says 'I don't know' instead of hallucinating.", "You can demo end-to-end in <5 minutes."], "github_artifacts": ["2\u20133 minute demo video (screen recording) linked in README", "Architecture diagram + sample Q/A screenshots"], "resources": ["LangChain: RAG (docs)", "LlamaIndex: Understanding RAG"], "num": 3, "start": "2026-03-08", "end": "2026-03-22", "week1_hours": 8.0, "week2_hours": 8.0, "sprint_hours": 16.0}, {"title": "Production API polish: auth + rate limits + caching + streaming", "simple": "Make the RAG API feel production-ready: secure, fast, and stable under repeated queries.", "tasks": [{"week": 1, "hours": 2.0, "text": "Add API-key auth (simple) or JWT auth (strong). Document how to use.", "expect": "Unauthorized calls fail; authorized calls succeed."}, {"week": 1, "hours": 2.0, "text": "Add rate limiting per user (Redis-backed) and return friendly 429 errors.", "expect": "API is protected from abuse."}, {"week": 1, "hours": 2.5, "text": "Add caching: retrieval cache (query\u2192chunk_ids) and/or answer cache (question\u2192answer).", "expect": "Repeat questions become much faster."}, {"week": 1, "hours": 1.5, "text": "Add streaming responses (SSE) for `/ask` so UI feels snappy.", "expect": "Client receives tokens progressively."}, {"week": 2, "hours": 2.0, "text": "Add structured logging: latency, cache_hit, chunks_used, model name, prompt version.", "expect": "Logs tell you what happened per request."}, {"week": 2, "hours": 2.5, "text": "Build a load test (Go recommended) and run a baseline benchmark.", "expect": "You can report p50/p95 latency + RPS."}, {"week": 2, "hours": 2.0, "text": "Add a `perf/` report with charts or tables (before/after caching).", "expect": "Measurable improvement is visible."}, {"week": 2, "hours": 1.0, "text": "Update README with 'Performance & Limits' section.", "expect": "Recruiters see production thinking."}], "validate": ["Cache hit reduces latency noticeably for repeat questions.", "Load test produces stable p95 latency metrics.", "Logs include enough fields to debug incidents quickly."], "github_artifacts": ["Go load-test tool + sample benchmark output", "Performance section with p50/p95 + cache hit rate"], "resources": ["FastAPI (official docs)", "Prometheus: Getting started"], "num": 4, "start": "2026-03-23", "end": "2026-04-06", "week1_hours": 8.0, "week2_hours": 7.5, "sprint_hours": 15.5}, {"title": "Evals: golden dataset + regression testing (major differentiator)", "simple": "Measure RAG quality and stop regressions with automated evaluation.", "tasks": [{"week": 1, "hours": 2.0, "text": "Create a golden dataset (50\u2013150 Qs): question, expected citation(s), expected key points.", "expect": "Dataset file exists and is documented."}, {"week": 1, "hours": 2.0, "text": "Build eval runner: run questions \u2192 capture answer + citations + latency + cost.", "expect": "`make eval` produces a report."}, {"week": 1, "hours": 2.5, "text": "Add scoring: citation accuracy + refusal correctness + basic answer checks.", "expect": "You get a numeric score per run."}, {"week": 1, "hours": 2.0, "text": "Add 'LLM-as-judge' option + spot-check at least 20 questions manually.", "expect": "You trust the evals."}, {"week": 2, "hours": 2.0, "text": "Add CI gate: fail PR if quality drops beyond threshold.", "expect": "Bad changes are blocked automatically."}, {"week": 2, "hours": 2.0, "text": "Log eval runs to MLflow/W&B (score, latency, version tags).", "expect": "You can compare runs over time."}, {"week": 2, "hours": 2.0, "text": "Write `EVALS.md`: how to add tests and interpret scores.", "expect": "Anyone can extend the dataset."}, {"week": 2, "hours": 1.5, "text": "Add a small HTML/Markdown report output (top failures list).", "expect": "Failures are easy to fix."}], "validate": ["`make eval` produces an understandable score report + top failures list.", "CI blocks quality regressions with clear failure messages.", "At least 20 gold answers are human-verified (not just model-judged)."], "github_artifacts": ["`EVALS.md` + sample evaluation report", "Badges/graph screenshots showing improvements over time"], "resources": ["LangSmith: Evaluate a RAG application", "YouTube: LangSmith Evaluations (playlist)", "MLflow tracking quickstart", "Weights & Biases quickstart"], "num": 5, "start": "2026-04-07", "end": "2026-04-21", "week1_hours": 8.5, "week2_hours": 7.5, "sprint_hours": 16.0}, {"title": "Observability: traces + metrics + dashboards + runbooks", "simple": "Make the service debuggable: you can pinpoint slow retrieval, model latency, cache misses, and errors.", "tasks": [{"week": 1, "hours": 2.0, "text": "Add OpenTelemetry tracing to FastAPI + DB calls + LLM calls (spans).", "expect": "You can trace one request end-to-end."}, {"week": 1, "hours": 2.0, "text": "Expose Prometheus metrics endpoint (requests, latency, errors, cache hit rate).", "expect": "Metrics scrape works locally."}, {"week": 1, "hours": 2.0, "text": "Add Grafana dashboard (JSON export) with p95 latency, error rate, cache hit rate.", "expect": "Dashboard imports cleanly."}, {"week": 1, "hours": 1.5, "text": "Add log enrichment: trace_id in logs for correlation.", "expect": "You can jump from logs \u2192 trace."}, {"week": 2, "hours": 2.0, "text": "Define basic SLOs: e.g., 99% requests < 2s, error rate < 1%.", "expect": "SLOs documented in README."}, {"week": 2, "hours": 2.0, "text": "Add alerts (local rules) for latency/error spikes (even if not paging).", "expect": "Alert rules exist and are testable."}, {"week": 2, "hours": 2.5, "text": "Write runbook with 5 failure scenarios (DB down, vector index slow, model slow, cache down, bad deploy).", "expect": "Runbook is concrete and actionable."}, {"week": 2, "hours": 1.0, "text": "Record a short 'debug session' demo: show trace + dashboard.", "expect": "Recruiters see real ops skill."}], "validate": ["You can trace a slow request and identify whether DB, retrieval, or LLM is the bottleneck.", "Grafana shows p95 latency and cache hit rate correctly.", "Runbook has at least 5 real incident playbooks."], "github_artifacts": ["Grafana dashboard JSON + screenshots", "`runbooks/` folder with incident playbooks"], "resources": ["OpenTelemetry Python instrumentation", "OpenTelemetry Python auto-instrumentation example", "Prometheus: Getting started", "Grafana + Prometheus: first dashboards"], "num": 6, "start": "2026-04-22", "end": "2026-05-06", "week1_hours": 7.5, "week2_hours": 7.5, "sprint_hours": 15.0}, {"title": "Deploy 1: local Kubernetes (kind/minikube) + Helm/manifests", "simple": "Run your app on Kubernetes like real teams do, with probes, configs, and upgrades.", "tasks": [{"week": 1, "hours": 2.0, "text": "Set up local K8s (kind/minikube). Add scripts: `make k8s-up`, `make k8s-down`.", "expect": "Fresh cluster setup is repeatable."}, {"week": 1, "hours": 2.5, "text": "Write Deployment + Service + Ingress for the API.", "expect": "Service is reachable via Ingress."}, {"week": 1, "hours": 2.0, "text": "Configure ConfigMaps/Secrets for settings (no secrets in repo).", "expect": "App loads config securely."}, {"week": 1, "hours": 2.0, "text": "Add readiness/liveness probes + resource requests/limits.", "expect": "Pods are healthy and restart safely."}, {"week": 2, "hours": 2.0, "text": "Add Postgres/Redis as K8s services (or helm charts) for local stack.", "expect": "All components run in cluster."}, {"week": 2, "hours": 2.5, "text": "Optional strong: package into Helm chart with values for dev/prod.", "expect": "One command installs the app."}, {"week": 2, "hours": 1.5, "text": "Test rolling update and document rollback steps.", "expect": "You can revert a bad deploy."}, {"week": 2, "hours": 1.5, "text": "Add a K8s deployment doc with diagrams.", "expect": "Clear story for interviewers."}], "validate": ["From scratch, you can deploy to local K8s and access the API in <20 minutes.", "Rolling update works and rollback is documented.", "Probes and resource limits behave correctly under load."], "github_artifacts": ["`k8s/` or `helm/` directory with README and diagrams", "Release/rollback checklist markdown"], "resources": ["Kubernetes Deployments", "Kubernetes Services", "Kubernetes Ingress", "YouTube: Kubernetes (TechWorld with Nana)"], "num": 7, "start": "2026-05-07", "end": "2026-05-21", "week1_hours": 8.5, "week2_hours": 7.5, "sprint_hours": 16.0}, {"title": "Deploy 2: AWS deploy with Terraform + CI/CD", "simple": "Prove you can deploy reliably to cloud using Infrastructure as Code, not manual clicking.", "tasks": [{"week": 1, "hours": 2.0, "text": "Pick deployment target: ECS (faster) or EKS (stronger signal). Write a short decision doc.", "expect": "You justify your choice."}, {"week": 1, "hours": 3.0, "text": "Terraform: networking basics + compute (ECS/EKS) + IAM roles.", "expect": "Infra applies successfully."}, {"week": 1, "hours": 2.5, "text": "Terraform: managed Postgres (RDS) and minimal secrets wiring.", "expect": "DB works and app can connect."}, {"week": 1, "hours": 2.0, "text": "CI/CD: GitHub Actions build \u2192 push image \u2192 deploy.", "expect": "Merge to main triggers deploy."}, {"week": 2, "hours": 2.0, "text": "Environment separation: dev/prod variables + state handling.", "expect": "Dev and prod are distinct."}, {"week": 2, "hours": 2.0, "text": "Add rollback strategy (tagged releases + redeploy previous).", "expect": "Rollback is one command."}, {"week": 2, "hours": 1.5, "text": "Add cost notes + teardown guide (`terraform destroy`).", "expect": "You can safely clean up."}, {"week": 2, "hours": 1.5, "text": "Write 'Production Deployment' section in README with diagram.", "expect": "Recruiters see cloud maturity."}], "validate": ["You can deploy from CI on a new environment reproducibly.", "Rollback works and is documented.", "You have a cost+teardown guide (shows senior thinking)."], "github_artifacts": ["`infra/terraform/` with README + diagram", "Cost & teardown guide"], "resources": ["Terraform official tutorials", "YouTube: Terraform (freeCodeCamp)"], "num": 8, "start": "2026-05-22", "end": "2026-06-05", "week1_hours": 9.5, "week2_hours": 7.0, "sprint_hours": 16.5}, {"title": "Security for LLM apps: OWASP + prompt injection + output validation", "simple": "Make your AI system safe: prevent data leaks, prompt injection, and unsafe actions.", "tasks": [{"week": 1, "hours": 2.0, "text": "Add PII-safe logging (redact emails/phones/IDs) + verify logs don't leak.", "expect": "Logs contain redacted values."}, {"week": 1, "hours": 2.0, "text": "Add prompt-injection test cases into golden eval dataset.", "expect": "Injection cases are evaluated."}, {"week": 1, "hours": 2.0, "text": "Add output validation: for structured outputs, enforce schema with Pydantic.", "expect": "Bad outputs are rejected."}, {"week": 1, "hours": 2.0, "text": "Add retrieval policy: only allow certain doc sources; deny unknown sources.", "expect": "No accidental data mixing."}, {"week": 2, "hours": 2.5, "text": "Add 'safe completion' policy: refuse requests indicating secrets/unsafe actions.", "expect": "Safer behavior is consistent."}, {"week": 2, "hours": 2.0, "text": "Write a short threat model (assets, threats, mitigations) for your system.", "expect": "Threat model doc exists."}, {"week": 2, "hours": 1.5, "text": "Add security checklist to PR template.", "expect": "Security checks are habitual."}, {"week": 2, "hours": 1.5, "text": "Demo: run injection tests and show how system resists.", "expect": "A convincing security demo."}], "validate": ["Injection test cases consistently fail-safe (refuse or ignore malicious instructions).", "Logs and responses avoid leaking secrets/PII.", "Threat model lists at least 10 realistic threats + mitigations."], "github_artifacts": ["`security/THREAT_MODEL.md` + `security/PII_REDACTION.md`", "Injection test suite + report"], "resources": ["OWASP Top 10 for LLM Applications", "OWASP GenAI: LLM Top 10"], "num": 9, "start": "2026-06-06", "end": "2026-06-20", "week1_hours": 8.0, "week2_hours": 7.5, "sprint_hours": 15.5}, {"title": "Agents (carefully): tool calling + permissions + human approval", "simple": "Build an agent that can use tools, but cannot take dangerous actions without permission.", "tasks": [{"week": 1, "hours": 2.0, "text": "Define 3 tools (safe): search docs, summarize, list sources (read-only).", "expect": "Tools work and are tested."}, {"week": 1, "hours": 2.5, "text": "Implement tool-calling using LangGraph or similar with strict allowlist.", "expect": "Agent can call tools reliably."}, {"week": 1, "hours": 2.0, "text": "Add 'human approval' for write actions (even if mocked).", "expect": "Write actions require approval token."}, {"week": 1, "hours": 2.0, "text": "Add audit log: user_id, tool, inputs, outputs, timestamps.", "expect": "Audits are searchable."}, {"week": 2, "hours": 2.0, "text": "Add 20 agent scenarios test suite (correct tool selection, refusal, safe behavior).", "expect": "Agent behavior is testable."}, {"week": 2, "hours": 2.0, "text": "Add eval metric: tool accuracy (picked right tool?) and success rate.", "expect": "You can quantify agent reliability."}, {"week": 2, "hours": 1.5, "text": "Document agent safety rules + examples.", "expect": "Clear and persuasive documentation."}, {"week": 2, "hours": 1.5, "text": "Demo video: show approval flow + audit logs.", "expect": "Recruiters see 'safe agents' skills."}], "validate": ["Agent cannot perform write actions without approval.", "Tool calls are logged with trace IDs and user IDs.", "At least 20 agent scenarios pass consistently in CI."], "github_artifacts": ["`agents/` folder with examples + safety rules", "Short demo video (approval flow)"], "resources": ["LangGraph (agents) docs"], "num": 10, "start": "2026-06-21", "end": "2026-07-05", "week1_hours": 8.5, "week2_hours": 7.0, "sprint_hours": 15.5}, {"title": "Mini-ML project: training + tracking + serving (credibility boost)", "simple": "Show you can do real ML: train a small model, track experiments, and serve predictions.", "tasks": [{"week": 1, "hours": 2.0, "text": "Pick a small task/dataset (classification/NER) and define success metric.", "expect": "Problem statement + metric exists."}, {"week": 1, "hours": 3.0, "text": "Build baseline model (Transformers or classic) + training script.", "expect": "Baseline scores recorded."}, {"week": 1, "hours": 2.0, "text": "Add experiment tracking (MLflow or W&B) for runs and metrics.", "expect": "Runs are logged and comparable."}, {"week": 1, "hours": 2.0, "text": "Add dataset/model versioning (optional strong): DVC.", "expect": "Reproducibility improved."}, {"week": 2, "hours": 3.0, "text": "Tune or LoRA fine-tune; compare to baseline; write results.", "expect": "Improvement shown with numbers."}, {"week": 2, "hours": 2.0, "text": "Serve model behind FastAPI endpoint with schema validation.", "expect": "API returns predictions reliably."}, {"week": 2, "hours": 1.5, "text": "Add a small client + example payloads.", "expect": "Easy to demo quickly."}, {"week": 2, "hours": 1.5, "text": "Write `RESULTS.md` with charts, decisions, and next steps.", "expect": "Readable ML narrative."}], "validate": ["Training is reproducible (same command produces similar results).", "You have an experiment dashboard screenshot or export.", "Model endpoint behaves predictably with typed input/output."], "github_artifacts": ["`mini-ml-lab` repo or `training/` directory with scripts + results", "A clear `RESULTS.md` with baseline vs tuned comparison"], "resources": ["Hugging Face LLM Course", "Full Stack Deep Learning (course)", "MLflow tracking quickstart", "DVC: Get started"], "num": 11, "start": "2026-07-06", "end": "2026-07-20", "week1_hours": 9.0, "week2_hours": 8.0, "sprint_hours": 17.0}, {"title": "LLM Serving Lab 1: vLLM endpoint + API wrapper + benchmarks", "simple": "Serve an open model like a real service and measure throughput/latency.", "tasks": [{"week": 1, "hours": 2.0, "text": "Set up vLLM locally (choose a small model that runs on your machine).", "expect": "vLLM server responds to prompts."}, {"week": 1, "hours": 2.0, "text": "Wrap vLLM behind a small API (FastAPI or Go) with input validation.", "expect": "You have a stable API contract."}, {"week": 1, "hours": 2.0, "text": "Add auth + rate limiting at wrapper layer.", "expect": "Abuse protection is in place."}, {"week": 1, "hours": 2.0, "text": "Add metrics: tokens/sec, p95 latency, queue depth (even approximate).", "expect": "Metrics are visible."}, {"week": 2, "hours": 2.5, "text": "Create benchmark script (concurrency sweep) and record results.", "expect": "You can report RPS and p95."}, {"week": 2, "hours": 2.0, "text": "Tune batching/caching and compare before/after.", "expect": "You show measurable improvement."}, {"week": 2, "hours": 1.5, "text": "Write `BENCHMARK.md` with tables and environment details.", "expect": "Reproducible benchmarks."}, {"week": 2, "hours": 1.5, "text": "Create a clean diagram of serving architecture.", "expect": "Interview-ready diagram."}], "validate": ["You can serve a model and handle concurrent requests without crashes.", "You can report throughput + p95 latency from benchmarks.", "You can explain bottlenecks and improvement steps."], "github_artifacts": ["`llm-serving-lab` repo with setup + benchmark report", "Before/after comparison table (batching/caching)"], "resources": ["vLLM docs", "vLLM GitHub"], "num": 12, "start": "2026-07-21", "end": "2026-08-04", "week1_hours": 8.0, "week2_hours": 7.5, "sprint_hours": 15.5}, {"title": "LLM Serving Lab 2: Kubernetes autoscaling + canary + incident drill", "simple": "Operate inference like production: scaling, safe deploys, and recovery drills.", "tasks": [{"week": 1, "hours": 2.5, "text": "Deploy vLLM to K8s with resource requests/limits and health checks.", "expect": "Inference service runs in cluster."}, {"week": 1, "hours": 2.0, "text": "Set up autoscaling (HPA) and define scaling signals (CPU/latency proxy).", "expect": "Scaling triggers under load."}, {"week": 1, "hours": 2.0, "text": "Add canary deployment approach and document rollback steps.", "expect": "Safe deploy story exists."}, {"week": 1, "hours": 1.5, "text": "Add dashboards for inference: latency, error rate, saturation.", "expect": "Dashboards display key signals."}, {"week": 2, "hours": 2.5, "text": "Run a load test that triggers scaling; record results (screenshots).", "expect": "Evidence of autoscaling."}, {"week": 2, "hours": 2.0, "text": "Simulate incident (overload or bad config) and execute recovery runbook.", "expect": "Incident drill completed."}, {"week": 2, "hours": 1.5, "text": "Write a postmortem template + fill it for your incident drill.", "expect": "Demonstrates ops maturity."}, {"week": 2, "hours": 1.0, "text": "Update README: 'How to run the drill' steps.", "expect": "Repeatable drill guide."}], "validate": ["Autoscaling triggers and stabilizes latency under load.", "Canary rollout and rollback are documented and testable.", "You completed a realistic incident drill and wrote a postmortem."], "github_artifacts": ["`incident_drills/` folder + postmortem", "Dashboard screenshots showing scaling behavior"], "resources": ["Kubernetes Deployments", "Prometheus: Getting started"], "num": 13, "start": "2026-08-05", "end": "2026-08-19", "week1_hours": 8.0, "week2_hours": 7.0, "sprint_hours": 15.0}, {"title": "System design + AI design: 10 end-to-end designs + practice", "simple": "Create interview-ready system designs (RAG at scale, multi-tenant, eval pipelines, serving) and practice explaining them.", "tasks": [{"week": 1, "hours": 2.0, "text": "Create repo `ai-system-design-notes` with a template for each design (problem, API, data, tradeoffs).", "expect": "Consistent format across designs."}, {"week": 1, "hours": 3.0, "text": "Write 5 designs (RAG at scale, multi-tenant, caching, eval pipeline, observability).", "expect": "5 complete design docs."}, {"week": 1, "hours": 1.5, "text": "Add diagrams (Mermaid or SVG) for each design.", "expect": "Readable diagrams."}, {"week": 2, "hours": 3.0, "text": "Write 5 more designs (agents safety, cost control, serving, canary, incident response).", "expect": "10 complete design docs."}, {"week": 2, "hours": 2.0, "text": "Record yourself explaining 3 designs (10\u201315 min each).", "expect": "You spot gaps and improve."}, {"week": 2, "hours": 2.0, "text": "Do 2 mock interviews with a friend or online peer.", "expect": "Feedback captured."}, {"week": 2, "hours": 1.5, "text": "Create a 1-page cheat sheet for each design.", "expect": "Fast revision material."}, {"week": 2, "hours": 1.0, "text": "Write 'failure modes' doc (what breaks and how to fix).", "expect": "Strong senior signal."}], "validate": ["You can explain each design in 10 minutes with clear tradeoffs.", "Your diagrams are understandable without talking.", "Mocks reveal fewer gaps over time (track feedback)."], "github_artifacts": ["Public repo with 10 designs + diagrams", "Cheat sheets + failure modes doc"], "resources": ["Full Stack Deep Learning (course)", "YouTube: Karpathy Zero to Hero (playlist)"], "num": 14, "start": "2026-08-20", "end": "2026-09-03", "week1_hours": 6.5, "week2_hours": 9.5, "sprint_hours": 16.0}, {"title": "Portfolio + resume pack: polish, metrics, and storytelling", "simple": "Make recruiters understand your impact in 60 seconds: demos, metrics, clean READMEs, and strong bullets.", "tasks": [{"week": 1, "hours": 2.0, "text": "Rewrite README for main repos: problem \u2192 solution \u2192 architecture \u2192 demo \u2192 results.", "expect": "README reads like a product page."}, {"week": 1, "hours": 2.0, "text": "Add 'Results' section with real numbers (quality score, p95 latency, cache hit rate, throughput).", "expect": "Hard metrics included."}, {"week": 1, "hours": 2.0, "text": "Create GitHub Pages portfolio linking your repos and demos.", "expect": "One clean landing page."}, {"week": 1, "hours": 1.5, "text": "Draft 8 resume bullets from your repos (impact + metrics).", "expect": "Bullets ready for resume."}, {"week": 2, "hours": 2.0, "text": "Write 6 STAR stories (outage, scaling, ambiguity, leadership, conflict, learning).", "expect": "Behavioral prep ready."}, {"week": 2, "hours": 2.0, "text": "Do 2 mock recruiter screens and refine your pitch.", "expect": "Pitch becomes crisp."}, {"week": 2, "hours": 1.5, "text": "Create a single 'pinned' summary repo that links everything (journey timeline).", "expect": "Easy for recruiters to navigate."}, {"week": 2, "hours": 1.5, "text": "Ask 5 people to review (README + resume) and apply fixes.", "expect": "External quality signal."}], "validate": ["A recruiter can understand your project and metrics within 60 seconds.", "Your resume bullets are measurable and role-aligned.", "Your GitHub looks intentional (pinned repos + portfolio page)."], "github_artifacts": ["GitHub Pages portfolio", "Pinned summary repo (timeline + links + top demos)"], "resources": ["FastAPI (official docs)", "LangSmith: Evaluate a RAG application"], "num": 15, "start": "2026-09-04", "end": "2026-09-18", "week1_hours": 7.5, "week2_hours": 7.0, "sprint_hours": 14.5}, {"title": "Application sprint: targeted outreach + mock loops + iterate", "simple": "Convert your work into interviews through targeted applications, referrals, and practice loops.", "tasks": [{"week": 1, "hours": 2.0, "text": "Build target list (30 companies) + role keywords (LLM engineer, AI engineer, ML platform).", "expect": "Clear list exists."}, {"week": 1, "hours": 2.0, "text": "Apply to 10 roles with tailored bullets and links to demos.", "expect": "First batch submitted."}, {"week": 1, "hours": 2.0, "text": "Ask for 10 referrals (short message + links to portfolio).", "expect": "Referral pipeline started."}, {"week": 1, "hours": 2.0, "text": "Do 2 coding mocks (LeetCode-style) focused on what your target roles ask.", "expect": "Weak areas identified."}, {"week": 2, "hours": 2.5, "text": "Do 2 system design mocks (one classic + one AI design).", "expect": "Feedback captured."}, {"week": 2, "hours": 2.0, "text": "Create tracking sheet (applications, responses, next steps, feedback).", "expect": "You can iterate weekly."}, {"week": 2, "hours": 2.0, "text": "Update portfolio/resume based on feedback.", "expect": "Iteration cycle established."}, {"week": 2, "hours": 1.5, "text": "Keep shipping small improvements to repos (fresh commits).", "expect": "Repos look active."}], "validate": ["You have a steady cadence of recruiter screens (or clear feedback on why not).", "Mock performance improves week-over-week.", "Portfolio gets stronger and more focused with each iteration."], "github_artifacts": ["Optional private repo: interview prep notes (keep private)", "Public: small 'What I built in 8 months' post (no employer info)"], "resources": ["YouTube: Kubernetes (TechWorld with Nana)", "YouTube: Terraform (freeCodeCamp)"], "num": 16, "start": "2026-09-19", "end": "2026-10-03", "week1_hours": 8.0, "week2_hours": 8.0, "sprint_hours": 16.0}];
+
+const SCOREBOARD_ITEMS = [
+  "Demo (GIF/video/screenshots)",
+  "README updated (what changed + how to run)",
+  "CI green (lint + tests)",
+  "Measurable result (quality/p95 latency/throughput/cost note)",
+  "Reflection (what worked, what broke, next fix)"
+];
+
+let idx = 0;
+
+function keyForSprint(sprintNum) {
+  return "ai_plan_2026_sprint_" + sprintNum;
+}
+function getState(sprintNum) {
+  const raw = localStorage.getItem(keyForSprint(sprintNum));
+  if (!raw) return {};
+  try { return JSON.parse(raw); } catch (e) { return {}; }
+}
+function setState(sprintNum, obj) {
+  localStorage.setItem(keyForSprint(sprintNum), JSON.stringify(obj));
+}
+
+function renderScoreboard() {
+  const ul = document.getElementById("scoreboard");
+  ul.innerHTML = "";
+  SCOREBOARD_ITEMS.forEach((t, i) => {
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <label style="display:flex; gap:10px; align-items:flex-start; width:100%;">
+        <input type="checkbox" data-score="${i}">
+        <span>${t}</span>
+      </label>
+    `;
+    ul.appendChild(li);
+  });
+}
+
+function makeTaskLi(s, taskIndex, task, checked) {
+  const li = document.createElement("li");
+  li.innerHTML = `
+    <label style="display:flex; gap:10px; align-items:flex-start; width:100%;">
+      <input type="checkbox" data-task="${taskIndex}" ${checked ? "checked" : ""}>
+      <div style="flex:1;">
+        <div style="font-weight:700;">${task.text}</div>
+        <div class="task-meta">
+          <span class="chip">~${task.hours} hrs</span>
+          <span class="chip">Week ${task.week}</span>
+        </div>
+        <div class="expect">Expected: ${task.expect}</div>
+      </div>
+    </label>
+  `;
+  return li;
+}
+
+function render() {
+  const s = SPRINTS[idx];
+  document.getElementById("sprintPill").textContent = `Sprint ${s.num} / ${SPRINTS.length}`;
+  document.getElementById("datePill").textContent = `${s.start} → ${s.end}`;
+  document.getElementById("timePill").textContent = `Time ~${s.sprint_hours}h (W1 ~${s.week1_hours}h, W2 ~${s.week2_hours}h)`;
+  document.getElementById("sprintTitle").textContent = `Sprint ${s.num}: ${s.title}`;
+  document.getElementById("simpleLine").textContent = s.simple;
+
+  const state = getState(s.num);
+
+  // Tasks split by week
+  const w1 = document.getElementById("taskListW1");
+  const w2 = document.getElementById("taskListW2");
+  w1.innerHTML = "";
+  w2.innerHTML = "";
+
+  s.tasks.forEach((task, i) => {
+    const checked = !!state["t_" + i];
+    const li = makeTaskLi(s, i, task, checked);
+    if (task.week === 1) w1.appendChild(li);
+    else w2.appendChild(li);
+  });
+
+  // Validation
+  const validateList = document.getElementById("validateList");
+  validateList.innerHTML = "";
+  s.validate.forEach(v => {
+    const li = document.createElement("li");
+    li.textContent = "✅ " + v;
+    validateList.appendChild(li);
+  });
+
+  // GitHub artifacts
+  const ghList = document.getElementById("ghList");
+  ghList.innerHTML = "";
+  s.github_artifacts.forEach(g => {
+    const li = document.createElement("li");
+    li.textContent = "📌 " + g;
+    ghList.appendChild(li);
+  });
+
+  // Resources
+  const resList = document.getElementById("resList");
+  resList.innerHTML = "";
+  s.resources.forEach(r => {
+    const li = document.createElement("li");
+    // resources in JSON are titles only; map to URL if present
+    const urlMap = {"FastAPI (official docs)": "https://fastapi.tiangolo.com/", "FastAPI Tutorial: First Steps": "https://fastapi.tiangolo.com/tutorial/first-steps/", "FastAPI: SQL (Relational) Databases (SQLModel example)": "https://fastapi.tiangolo.com/tutorial/sql-databases/", "Pydantic v2 docs": "https://docs.pydantic.dev/latest/", "pytest: Getting Started": "https://docs.pytest.org/en/stable/getting-started.html", "Ruff linter docs": "https://docs.astral.sh/ruff/", "pgvector (Postgres vector extension)": "https://github.com/pgvector/pgvector", "setup-pgvector (GitHub Actions helper)": "https://github.com/pgvector/setup-pgvector", "LangChain: RAG (docs)": "https://docs.langchain.com/oss/python/langchain/rag", "LlamaIndex: Understanding RAG": "https://developers.llamaindex.ai/python/framework/understanding/rag/", "LangSmith: Evaluate a RAG application": "https://docs.langchain.com/langsmith/evaluate-rag-tutorial", "LangGraph (agents) docs": "https://langchain-ai.github.io/langgraph/", "OWASP Top 10 for LLM Applications": "https://owasp.org/www-project-top-10-for-large-language-model-applications/", "OWASP GenAI: LLM Top 10": "https://genai.owasp.org/llm-top-10/", "OpenTelemetry Python instrumentation": "https://opentelemetry.io/docs/languages/python/instrumentation/", "OpenTelemetry Python auto-instrumentation example": "https://opentelemetry.io/docs/zero-code/python/example/", "Prometheus: Getting started": "https://prometheus.io/docs/prometheus/latest/getting_started/", "Grafana + Prometheus: first dashboards": "https://grafana.com/docs/grafana/latest/fundamentals/getting-started/first-dashboards/get-started-grafana-prometheus/", "Terraform official tutorials": "https://developer.hashicorp.com/terraform/tutorials", "Kubernetes Deployments": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/", "Kubernetes Services": "https://kubernetes.io/docs/concepts/services-networking/service/", "Kubernetes Ingress": "https://kubernetes.io/docs/concepts/services-networking/ingress/", "Hugging Face LLM Course": "https://huggingface.co/learn/llm-course/en/chapter1/1", "Full Stack Deep Learning (course)": "https://fullstackdeeplearning.com/course/", "YouTube: Karpathy Zero to Hero (playlist)": "https://www.youtube.com/playlist?list=PLAqhIrjkxbuWI23v9cThsA9GvCAUhRvKZ", "YouTube: LangSmith Evaluations (playlist)": "https://www.youtube.com/playlist?list=PLfaIDFEXuae0um8Fj0V4dHG37fGFU8Q5S", "YouTube: FastAPI (freeCodeCamp)": "https://www.youtube.com/watch?v=tLKKmouUams", "YouTube: Kubernetes (TechWorld with Nana)": "https://www.youtube.com/watch?v=X48VuDVv0do", "YouTube: Terraform (freeCodeCamp)": "https://www.youtube.com/watch?v=SLB_c_ayRMo", "vLLM docs": "https://docs.vllm.ai/", "vLLM GitHub": "https://github.com/vllm-project/vllm", "MLflow tracking quickstart": "https://mlflow.org/docs/latest/ml/tracking/quickstart/", "Weights & Biases quickstart": "https://docs.wandb.ai/quickstart", "DVC: Get started": "https://dvc.org/doc/start", "Ray Serve docs": "https://docs.ray.io/en/latest/serve/index.html"};
+    const url = urlMap[r] || "";
+    if (url) {
+      const a = document.createElement("a");
+      a.href = url; a.target = "_blank"; a.rel = "noreferrer";
+      a.textContent = r;
+      li.appendChild(a);
+    } else {
+      li.textContent = r;
+    }
+    resList.appendChild(li);
+  });
+
+  // Scoreboard
+  renderScoreboard();
+  const sb = document.getElementById("scoreboard");
+  sb.querySelectorAll("input[type=checkbox]").forEach(box => {
+    const k = "s_" + box.dataset.score;
+    box.checked = !!state[k];
+    box.addEventListener("change", () => {
+      const st = getState(s.num);
+      st[k] = box.checked;
+      setState(s.num, st);
+    });
+  });
+
+  // Task checkbox handlers
+  document.querySelectorAll("input[data-task]").forEach(box => {
+    box.addEventListener("change", () => {
+      const st = getState(s.num);
+      st["t_" + box.dataset.task] = box.checked;
+      setState(s.num, st);
+      updateProgress();
+    });
+  });
+
+  updateProgress();
+
+  document.getElementById("prevBtn").disabled = idx === 0;
+  document.getElementById("nextBtn").disabled = idx === SPRINTS.length - 1;
+}
+
+function updateProgress() {
+  const s = SPRINTS[idx];
+  const state = getState(s.num);
+  const totalTasks = s.tasks.length;
+  let doneTasks = 0;
+  let doneHrs = 0;
+  let totalHrs = 0;
+  s.tasks.forEach((t, i) => {
+    totalHrs += t.hours;
+    if (state["t_" + i]) {
+      doneTasks++;
+      doneHrs += t.hours;
+    }
+  });
+  const pct = totalTasks ? Math.round((doneTasks / totalTasks) * 100) : 0;
+  document.getElementById("pct").textContent = pct + "%";
+  document.getElementById("bar").style.width = pct + "%";
+  document.getElementById("hrs").textContent = `${doneHrs.toFixed(1)}/${totalHrs.toFixed(1)}`;
+}
+
+document.getElementById("prevBtn").addEventListener("click", () => {
+  if (idx > 0) { idx--; render(); }
+});
+document.getElementById("nextBtn").addEventListener("click", () => {
+  if (idx < SPRINTS.length - 1) { idx++; render(); }
+});
+document.getElementById("resetBtn").addEventListener("click", () => {
+  const s = SPRINTS[idx];
+  localStorage.removeItem(keyForSprint(s.num));
+  render();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowLeft") { if (idx > 0) { idx--; render(); } }
+  else if (e.key === "ArrowRight") { if (idx < SPRINTS.length - 1) { idx++; render(); } }
+});
+
+render();
+</script>
+</body>
+</html>
